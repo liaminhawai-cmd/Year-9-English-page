@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Table talk for the Curious Incident speaking folio: two people at a table, one line at a time, with the Listening, Interacting and Presenting rubric alongside.">
 <title>Curious Incident · Table Talk</title>
-<link rel="stylesheet" href="folio.css?v=3">
+<link rel="stylesheet" href="folio.css?v=4">
 <style>
 /* scale with the screen: laptop, projector, TV */
 html{font-size:clamp(15px, .5vw + 9px, 24px)}
@@ -118,8 +118,8 @@ html{font-size:clamp(15px, .5vw + 9px, 24px)}
 <p class="foot">Two seats, A and B. Next shows a line; Next again marks it against the rubric. ← → on a keyboard, ↑ ↓ for the level.</p>
 </div>
 
-<script src="prompts.js?v=3"></script>
-<script src="wagoll-content.js?v=3"></script>
+<script src="prompts.js?v=4"></script>
+<script src="wagoll-content.js?v=4"></script>
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
@@ -130,7 +130,7 @@ const strand = k => FOLIO.continuum.strands.find(s => s.key === STRANDS.find(x =
 const LEVELS = FOLIO.continuum.levels;
 const KEEP = 3;
 
-const S = { si: 0, li: 2, shown: 1, ann: false };
+const S = { si: 0, li: 0, shown: 1, ann: false };
 const params = new URLSearchParams(location.search);
 if (params.get("session")) S.si = Math.max(0, Math.min(2, +params.get("session") - 1));
 const sess = () => SESSIONS[S.si];
@@ -219,6 +219,7 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowUp") $("#up").click();
   if (e.key === "ArrowDown") $("#down").click();
 });
+S.li = Math.max(0, SESSIONS[S.si].levels.findIndex(l => l.level === FOLIO.continuum.expected));
 buildRubric(); renderStatic(); render();
 </script>
 </body>

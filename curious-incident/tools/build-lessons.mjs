@@ -79,7 +79,7 @@ const plans = [
     preteach: [
       "Open Table talk on Session 1 at level 7. Click through the first four lines. Ask: what is missing? (Reasons. Links. Nobody asks D anything.)",
       "Level up to 9. Show a line, then press Mark it: the words light up and the rubric row on the side says which strand it is evidence for and at what level. Stop on B's 'So you're reading it as him rejecting her?' (Listening 8) and on A's 'I'd find that easier' (Interacting 7).",
-      "Level up to 11 for two lines only: B's 'So you're saying…' (Listening 8, inferring what the speaker implies and checking it) and the last line, where B changes their view out loud. That is what gets a student above 9.",
+      "Level up through 10 to 11 for two lines only: B's 'So you're saying…' (Listening 8, inferring what the speaker implies and checking it) and the last line, where B changes their view out loud. That is what gets a student above 9.",
       "Throwaway practice, two minutes, in the groups they will sit in: the 'faces' passage where Siobhan draws expressions. Go round once with a feeling and a because. One person asks one question.",
     ],
     model: "Sit at Table 1 with one group for ninety seconds on the Table 1 quote. Play the level 7 student once: 'I think it's sad.' Ask the class what the next person should say. Then play it at 9.",
