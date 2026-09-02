@@ -7,8 +7,8 @@
 
    Seven pages, nothing explained on any of them (the teacher explains it):
      1    front page: name, continuum rubric (7 to 11), Table 1 teacher record
-     2-3  Session 1 as a spread: Tables 2 to 4, then Table 1 (greyed: the
-          booklet is with the teacher) with Tables 5 and 6
+     2-3  Session 1 as a spread: Table 1 (greyed: the booklet is with the
+          teacher), 2 and 3; then 4, 5 and 6
      4-5  Session 2, 6-7  Session 3: same. */
 
 import { createRequire } from "node:module";
@@ -87,7 +87,7 @@ body.push(table([
 ], obsW));
 body.push(brk());
 
-/* ---------- two pages per session: Tables 2 to 4, then Table 1 (teacher, greyed) with Tables 5 and 6 ---------- */
+/* ---------- two pages per session: Table 1 (teacher, greyed), 2 and 3; then 4, 5 and 6 ---------- */
 const W = [4200, 2300, 5100, CONTENT - 11600];
 const ROWH = 2750;
 const shortQuote = q => q.length > 150 ? q.slice(0, 148).replace(/\s+\S*$/, "") + " …" : q;
@@ -111,10 +111,10 @@ const teacherRow = () => new TableRow({ height: { value: ROWH, rule: HeightRule.
 FOLIO.sessions.forEach((s, i) => {
   const st = s.stations.filter(x => !x.teacher);
   body.push(...sessHead(s, false));
-  body.push(table([colHead(), ...st.slice(0, 3).map(stationRow)], W));
+  body.push(table([colHead(), teacherRow(), ...st.slice(0, 2).map(stationRow)], W));
   body.push(brk());
   body.push(...sessHead(s, true));
-  body.push(table([colHead(), teacherRow(), ...st.slice(3).map(stationRow)], W));
+  body.push(table([colHead(), ...st.slice(2).map(stationRow)], W));
   if (i < FOLIO.sessions.length - 1) body.push(brk());
 });
 
