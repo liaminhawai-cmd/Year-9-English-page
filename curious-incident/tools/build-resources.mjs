@@ -74,6 +74,7 @@ section.g li{margin:2px 0}
     <a href="index.html">Prompts</a>
     <a href="wagoll.html">Table talk</a>
     <a href="vocab.html">Vocab</a>
+    <a href="glossary.html">Glossary</a>
     <a href="rubric.html">Rubric</a>
     <a href="groups.html">Groups</a>
     <a href="teacher.html">Teacher</a>
