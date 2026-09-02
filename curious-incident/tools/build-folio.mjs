@@ -71,9 +71,9 @@ body.push(table([
 body.push(P("Listening 10 to 12 in italics: draft extension above the school continuum.", { size: 7, color: MUTED, before: 40, after: 160 }));
 
 body.push(H("Table 1 · teacher observation", { size: 12 }));
-const obsW = [2300, 1100, 1000, 1000, 1000, CONTENT - 6400];
+const obsW = [3438, 1800, 1500, 1400, 1500];
 body.push(table([
-  new TableRow({ tableHeader: true, children: ["Session", "Date", "Listening", "Interacting", "Presenting", "Heard"].map((t, i) =>
+  new TableRow({ tableHeader: true, children: ["Session", "Date", "Listening", "Interacting", "Presenting"].map((t, i) =>
     cell(P(t, { bold: true, size: 7.5, caps: true, after: 0 }), obsW[i], { fill: BAND })) }),
   ...FOLIO.sessions.map(s => new TableRow({ height: { value: 1250, rule: HeightRule.ATLEAST }, children: [
     cell(P(`${s.n} · ${s.title}`, { size: 9, after: 0 }), obsW[0]), ...obsW.slice(1).map(w => cell(P("", { after: 0 }), w))] })),
