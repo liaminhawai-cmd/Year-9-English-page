@@ -2,7 +2,7 @@
    repo, each a direct link on GitHub. Reads the sibling checkout.
    node tools/build-resources.mjs [path to year-9-english] */
 import { execSync } from "node:child_process";
-import { writeFileSync, statSync } from "node:fs";
+import { writeFileSync, statSync, copyFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -14,7 +14,15 @@ const TREE = `https://github.com/liaminhawai-cmd/year-9-english/tree/${BRANCH}/`
 const files = execSync("git ls-files -z", { cwd: repo, encoding: "utf8" }).split("\0").filter(Boolean)
   .filter(f => !/desktop\.ini$|^tools\/|\.gitignore$|^README|\/Archive\/|Older files\//.test(f));
 const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
-const url = f => BASE + f.split("/").map(encodeURIComponent).join("/");
+/* The speaking-unit files are copied into the site so they download without a
+   GitHub sign-in. Everything else stays in the private repo. */
+const SITE_FILES = ["Curious Incident Speaking Folio.docx", "Curious Incident - Unit Planner.docx",
+  "Curious Incident Speaking Folio - Lesson 1 - Personal Response.docx",
+  "Curious Incident Speaking Folio - Lesson 2 - I Couldn't Disagree More.docx",
+  "Curious Incident Speaking Folio - Lesson 3 - Passage Analysis Panel.docx"];
+mkdirSync(path.join(here, "..", "files"), { recursive: true });
+SITE_FILES.forEach(n => copyFileSync(path.join(repo, "English LA - Year 9 English", n), path.join(here, "..", "files", n)));
+const url = f => SITE_FILES.includes(f.split("/").pop()) ? "files/" + encodeURIComponent(f.split("/").pop()) : BASE + f.split("/").map(encodeURIComponent).join("/");
 const name = f => f.split("/").pop();
 const size = f => { try { const b = statSync(path.join(repo, f)).size; return b > 1e6 ? (b / 1e6).toFixed(1) + " MB" : Math.round(b / 1e3) + " KB"; } catch { return ""; } };
 const li = f => `<li><a href="${url(f)}">${esc(name(f))}</a> <span class="sz">${size(f)}</span></li>`;
@@ -58,7 +66,7 @@ section.g li{margin:2px 0}
   <div>
     <div class="kicker">Year 9 English</div>
     <h1>Files</h1>
-    <p class="read">Word files download; PDFs open. Sign in to GitHub first. Everything else is in the <a href="${TREE}English%20LA%20-%20Year%209%20English">shared folder</a>.</p>
+    <p class="read">Word files. Click to download.</p>
   </div>
   <nav class="site" aria-label="Folio pages">
     <a href="index.html">Prompts</a>
@@ -78,7 +86,7 @@ section.g li{margin:2px 0}
   <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 3 - Passage Analysis Panel.docx")}"><b>Lesson 3 · Passage analysis panel</b><span>Word</span></a>
 </div>
 <div class="cols">${sections}</div>
-<p class="foot">Built from the repository file list by tools/build-resources.mjs. Rebuild after adding files.</p>
+
 </div>
 </body>
 </html>

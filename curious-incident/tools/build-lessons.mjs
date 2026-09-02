@@ -32,8 +32,8 @@ const L = {
   tScreen: ["Teacher notes: what goes on the screen", `${SITE}teacher.html#screen`],
   tTable1: ["Teacher notes: Table 1", `${SITE}teacher.html#table1`],
   tRun: ["Teacher notes: how a session runs", `${SITE}teacher.html#run`],
-  folio: ["Speaking Folio booklet (Word)", file("Curious Incident Speaking Folio.docx")],
-  planner: ["Unit planner", file("Curious Incident - Unit Planner.docx")],
+  folio: ["Speaking Folio booklet (Word)", `${SITE}files/${encodeURIComponent("Curious Incident Speaking Folio.docx")}`],
+  planner: ["Unit planner", `${SITE}files/${encodeURIComponent("Curious Incident - Unit Planner.docx")}`],
 };
 
 /* ---------- colours: the house lesson table ---------- */
