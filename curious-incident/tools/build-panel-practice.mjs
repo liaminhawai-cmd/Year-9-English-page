@@ -10,7 +10,7 @@ import { writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 const require = createRequire(import.meta.url);
-const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, BorderStyle, ShadingType, PageBreak, LevelFormat, VerticalAlign, ExternalHyperlink } = require("docx");
+const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, BorderStyle, ShadingType, PageBreak, LevelFormat, VerticalAlign, ExternalHyperlink, PageOrientation } = require("docx");
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const outDir = process.argv[2] || here; mkdirSync(outDir, { recursive: true });
@@ -32,8 +32,10 @@ const table = (rows, widths) => new Table({ width: { size: widths.reduce((a, b) 
 const brk = () => new Paragraph({ children: [new PageBreak()] });
 const lines = n => Array.from({ length: n }, () => new Paragraph({ spacing: { before: 0, after: 0, line: 440 }, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: LINE, space: 1 } }, children: [new TextRun({ text: "", size: 20 })] }));
 const numbering = { config: [{ reference: "bul", levels: [{ level: 0, format: LevelFormat.BULLET, text: "•", alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 360, hanging: 240 } } } }] }] };
-const docOf = (title, children) => new Document({ creator: "", lastModifiedBy: "", title, numbering, styles: { default: { document: { run: { font, size: 21 } } } },
-  sections: [{ properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 1000, bottom: 900, left: 1134, right: 1134 } } }, children }] });
+const docOf = (title, children, landscape) => new Document({ creator: "", lastModifiedBy: "", title, numbering, styles: { default: { document: { run: { font, size: 21 } } } },
+  sections: [{ properties: { page: landscape
+    ? { size: { width: 11906, height: 16838, orientation: PageOrientation.LANDSCAPE }, margin: { top: 720, bottom: 720, left: 720, right: 720 } }
+    : { size: { width: 11906, height: 16838 }, margin: { top: 1000, bottom: 900, left: 1134, right: 1134 } } }, children }] });
 
 /* ---------- the passage: chapter 2 ---------- */
 const PASSAGE = [
@@ -45,52 +47,61 @@ const PASSAGE = [
   "I stroked Wellington and wondered who had killed him, and why.",
 ];
 
-/* ---------- WORKSHEET ----------
-   Four lines in the passage are already marked ① to ④. The student labels
-   what each is doing. Then three open finds: a line that shows you
-   something about …, copied and explained. Then the panel's one thing. */
+/* ---------- WORKSHEET (landscape) ----------
+   Page 1: the passage down the middle, four lines already marked ① to ④,
+   a box beside each for what the line is doing. Page 2: three finds, side
+   by side, then the panel's one thing. */
 const W = [];
+const LW = 16838 - 1440;                      // landscape A4, 1.27 cm margins
+const PURPLE = "70243C", PEACH = "FAE2D5", WHITE = "FFFFFF";
 const MARK = ["①", "②", "③", "④"];
 const marked = { 0: ["It was 7 minutes after midnight."], 1: ["I decided that the dog was probably killed with the fork because I could not see any other wounds in the dog"], 2: ["It was still warm."], 4: ["like chicken"] };
 const paraRuns = (t, k) => {
   const marks = marked[k] || []; let rest = t, runs = [];
   marks.forEach((m, n) => { const i = rest.indexOf(m); if (i < 0) return; const idx = Object.keys(marked).indexOf(String(k)) + n;
-    runs.push({ text: rest.slice(0, i) }, { text: MARK[idx] + " ", bold: true, color: DEEP }, { text: m, bold: true }); rest = rest.slice(i + m.length); });
+    runs.push({ text: rest.slice(0, i) }, { text: MARK[idx] + " ", bold: true, color: PURPLE }, { text: m, bold: true }); rest = rest.slice(i + m.length); });
   runs.push({ text: rest }); return runs;
 };
-W.push(P("Speaking and Listening Folio · The Curious Incident of the Dog in the Night-Time", { size: 8, bold: true, color: MUTED, caps: true, after: 20 }));
-W.push(P("Passage panel · practice", { bold: true, size: 18, color: DEEP, after: 40 }));
+const hcell = (t, w, o = {}) => cell(P([{ text: t, bold: true, color: WHITE, size: o.size ?? 11 }], { after: 0, align: o.align }), w, { fill: PURPLE, valign: VerticalAlign.CENTER });
 W.push(table([new TableRow({ children: [
-  cell(P([{ text: "Name:  ", bold: true, size: 10 }], { after: 0 }), 4800, { borders: { ...nobox, bottom: { style: BorderStyle.SINGLE, size: 8, color: DEEP } } }),
-  cell(P([{ text: "Date:  ", bold: true, size: 10 }], { after: 0 }), 2400, { borders: { ...nobox, bottom: { style: BorderStyle.SINGLE, size: 8, color: DEEP } } }),
-  cell(P([{ text: "Table:  ", bold: true, size: 10 }], { after: 0 }), CONTENT - 7200, { borders: { ...nobox, bottom: { style: BorderStyle.SINGLE, size: 8, color: DEEP } } }),
-] })], [4800, 2400, CONTENT - 7200]));
-W.push(P("", { after: 80 }));
-W.push(P([{ text: "Chapter 2 · the opening", bold: true, size: 10, color: DEEP }], { after: 60 }));
-const SIDE = 2500, MID = CONTENT - 2 * SIDE;
-const lab = (n, hint) => cell([P([{ text: n, bold: true, color: DEEP, size: 11 }, { text: "  " + hint, size: 8.5, color: MUTED }], { after: 20 }), ...lines(3)], SIDE, { borders: box, valign: VerticalAlign.TOP });
+  hcell("Passage panel · practice", 7000, { size: 14 }),
+  cell(P([{ text: "Name:  ", bold: true, color: WHITE, size: 10 }], { after: 0 }), 4400, { fill: PURPLE, valign: VerticalAlign.CENTER }),
+  cell(P([{ text: "Date:  ", bold: true, color: WHITE, size: 10 }], { after: 0 }), 2000, { fill: PURPLE, valign: VerticalAlign.CENTER }),
+  cell(P([{ text: "Table:  ", bold: true, color: WHITE, size: 10 }], { after: 0 }), LW - 13400, { fill: PURPLE, valign: VerticalAlign.CENTER }),
+] })], [7000, 4400, 2000, LW - 13400]));
+W.push(P([{ text: "The Curious Incident of the Dog in the Night-Time · Chapter 2, the opening.  ", bold: true, size: 10, color: PURPLE }, { text: "Four lines are marked. Beside each one, say what it is doing.", size: 10 }], { before: 80, after: 80 }));
+const SIDE = 3500, MID = LW - 2 * SIDE;
+const lab = n => cell([P([{ text: n, bold: true, color: PURPLE, size: 13 }, { text: "  What is this doing?", size: 9, color: MUTED }], { after: 40 }), ...lines(4)], SIDE, { borders: box, fill: PEACH, valign: VerticalAlign.TOP });
 const empty = () => cell([P("", { after: 0 })], SIDE, { borders: nobox });
-const mid = paras => cell(paras.map(([t, k]) => P(paraRuns(t, k), { size: 10, font: "Times New Roman", after: 60, line: 264 })), MID, { borders: { top: none, bottom: none, left: thin, right: thin } });
+const mid = paras => cell(paras.map(([t, k]) => P(paraRuns(t, k), { size: 11, font: "Times New Roman", after: 80, line: 276 })), MID, { borders: { top: none, bottom: none, left: thin, right: thin } });
 const rows = [
-  [[[PASSAGE[0], 0]], lab("①", "What is this doing?"), empty()],
-  [[[PASSAGE[1], 1]], empty(), lab("②", "What is this doing?")],
-  [[[PASSAGE[2], 2], [PASSAGE[3], 3]], lab("③", "What is this doing?"), empty()],
-  [[[PASSAGE[4], 4], [PASSAGE[5], 5]], empty(), lab("④", "What is this doing?")],
+  [[[PASSAGE[0], 0]], lab("①"), empty()],
+  [[[PASSAGE[1], 1]], empty(), lab("②")],
+  [[[PASSAGE[2], 2], [PASSAGE[3], 3]], lab("③"), empty()],
+  [[[PASSAGE[4], 4], [PASSAGE[5], 5]], empty(), lab("④")],
 ];
 W.push(table(rows.map(([paras, l, r]) => new TableRow({ cantSplit: true, children: [l, mid(paras), r] })), [SIDE, MID, SIDE]));
 W.push(brk());
-W.push(P("Find a line", { bold: true, size: 12, color: DEEP, after: 40 }));
-[["… that shows you something about how Christopher thinks."], ["… that shows you something about what he notices, and what he does not."], ["… that shows you something about how he feels, without saying it."]].forEach(([t]) => {
-  W.push(P([{ text: "Find a line ", bold: true, size: 10.5, color: DEEP }, { text: t, size: 10.5 }], { before: 120, after: 20, keepNext: true }));
-  W.push(P([{ text: "The line:", bold: true, size: 8.5, color: MUTED }], { after: 0, keepNext: true })); W.push(...lines(2));
-  W.push(P([{ text: "What it shows:", bold: true, size: 8.5, color: MUTED }], { before: 60, after: 0, keepNext: true })); W.push(...lines(2));
-});
-W.push(P([{ text: "Panel talk. ", bold: true, size: 10, color: DEEP }, { text: "Groups of four. Someone reads. What happens, how is it written, what does it show. Every turn starts with “Yes, and …” or a question to the last speaker.", size: 10 }], { before: 200, after: 60 }));
-W.push(P("The one thing our table would tell the class, and the words that back it up:", { bold: true, size: 10, color: DEEP, before: 60, after: 20, keepNext: true }));
-W.push(...lines(3));
+W.push(table([new TableRow({ children: [hcell("Find a line", LW, { size: 14 })] })], [LW]));
+W.push(P("Copy the line. Then say what it shows.", { size: 10, before: 80, after: 80 }));
+const FW = Math.floor(LW / 3);
+const find = t => cell([
+  P([{ text: "… that shows you something about ", size: 10.5 }, { text: t, bold: true, size: 10.5, color: PURPLE }], { after: 60 }),
+  P([{ text: "The line", bold: true, size: 8.5, color: MUTED }], { after: 0, keepNext: true }), ...lines(3),
+  P([{ text: "What it shows", bold: true, size: 8.5, color: MUTED }], { before: 100, after: 0, keepNext: true }), ...lines(4),
+], FW, { borders: box, valign: VerticalAlign.TOP });
+W.push(table([new TableRow({ children: [find("how Christopher thinks."), find("what he notices, and what he does not."), find("how he feels, without saying it.")] })], [FW, FW, FW]));
+W.push(P("", { after: 120 }));
+W.push(table([new TableRow({ children: [hcell("Panel talk", LW, { size: 12 })] })], [LW]));
+W.push(P([{ text: "Groups of four. Someone reads. What happens, how is it written, what does it show. Every turn starts with “Yes, and …” or a question to the last speaker.", size: 10 }], { before: 80, after: 80 }));
+const half = Math.floor(LW / 2);
+W.push(table([new TableRow({ children: [
+  cell([P([{ text: "The one thing our table would tell the class", bold: true, size: 10, color: PURPLE }], { after: 0, keepNext: true }), ...lines(3)], half, { borders: box }),
+  cell([P([{ text: "The words from the passage that back it up", bold: true, size: 10, color: PURPLE }], { after: 0, keepNext: true }), ...lines(3)], LW - half, { borders: box }),
+] })], [half, LW - half]));
 
 /* ---------- LESSON PLAN (house lesson table) ---------- */
-const PURPLE = "70243C", GOLD = "FFC000";
+const GOLD = "FFC000";
 const ROW = { engage: { fill: "C5E0B4", ink: "375623" }, develop: { fill: "FBD5D5", ink: "9C0006" }, apply: { fill: "BDD7EE", ink: "1F4E79" }, review: { fill: "FFF2CC", ink: "7F6000" } };
 const LABEL = 2300;
 const lrow = (label, content, tone) => new TableRow({ children: [
@@ -132,5 +143,5 @@ LP.push(table([
   lrow("You will need", [B([{ link: L.ws }, { text: ", one per student." }]), B([{ text: "TV: " }, { link: L.talk }, { text: "." }]), B([{ text: "Words: " }, { link: L.vocab }, { text: " (elaborate, evidence, turn-taking)." }]), B("Novel, Chapter 2.")]),
 ], [LABEL, CONTENT - LABEL]));
 
-Packer.toBuffer(docOf("Passage panel practice worksheet", W)).then(b => { writeFileSync(path.join(outDir, WS_NAME), b); console.log("worksheet", b.length); });
+Packer.toBuffer(docOf("Passage panel practice worksheet", W, true)).then(b => { writeFileSync(path.join(outDir, WS_NAME), b); console.log("worksheet", b.length); });
 Packer.toBuffer(docOf("Passage panel practice lesson plan", LP)).then(b => { writeFileSync(path.join(outDir, LP_NAME), b); console.log("lesson", b.length); });
