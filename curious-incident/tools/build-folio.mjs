@@ -109,6 +109,6 @@ FOLIO.sessions.forEach((s, i) => {
 const doc = new Document({
   creator: "", lastModifiedBy: "", title: "Curious Incident Speaking and Listening Folio",
   styles: { default: { document: { run: { font, size: 22 } } } },
-  sections: [{ properties: { page: { size: { width: 16838, height: 11906, orientation: PageOrientation.LANDSCAPE }, margin: { top: 720, bottom: 720, left: 720, right: 720 } } }, children: body }],
+  sections: [{ properties: { page: { size: { width: 11906, height: 16838, orientation: PageOrientation.LANDSCAPE }, margin: { top: 720, bottom: 720, left: 720, right: 720 } } }, children: body }],
 });
 Packer.toBuffer(doc).then(buf => { writeFileSync(out, buf); console.log("wrote", out, buf.length, "bytes"); });
