@@ -63,6 +63,7 @@ section.g li{margin:2px 0}
   <nav class="site" aria-label="Folio pages">
     <a href="index.html">Prompts</a>
     <a href="wagoll.html">Table talk</a>
+    <a href="vocab.html">Vocab</a>
     <a href="rubric.html">Rubric</a>
     <a href="groups.html">Groups</a>
     <a href="teacher.html">Teacher</a>
