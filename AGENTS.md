@@ -38,6 +38,10 @@ published here as-is.
 - **Colour is a taxonomy.** On the speaking folio the four discussion moves
   own four colours (listen, respond, text, invite) and they mean the same
   thing on every page. Correctness is never carried by colour alone.
+- **Use the screen.** These pages are shown on classroom TVs and projectors
+  as often as on laptops. Type scales with the viewport (`html{font-size:
+  clamp(...)}`), the sheet is as wide as the screen, and nothing sits in
+  a narrow column with dead space either side.
 - **Say the honest thing.** The shuffler is a good guess, the timer is a
   timer, nothing here judges speech.
 

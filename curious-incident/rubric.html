@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Rubric for the Curious Incident speaking and listening folio: the school's Speaking and Listening continuum.">
 <title>Curious Incident · Folio Rubric</title>
-<link rel="stylesheet" href="folio.css">
+<link rel="stylesheet" href="folio.css?v=3">
 <style>
+html{font-size:clamp(15px, .5vw + 9px, 24px)}
+.sheet{max-width:min(96vw,1900px)}
 .wrap{overflow-x:auto;border:1px solid var(--line);border-radius:11px}
 table.cont{border-collapse:collapse;width:100%;min-width:900px;table-layout:fixed}
 .cont th,.cont td{border:1px solid var(--line);padding:8px 9px;vertical-align:top;text-align:left;font-size:.8rem;line-height:1.4}
@@ -46,7 +48,7 @@ table.cont{border-collapse:collapse;width:100%;min-width:900px;table-layout:fixe
 <p class="foot">Levels 5 to 11 as published in the school's Speaking and Listening continuum; Listening runs to 9 and Interacting to 10 there, and the blank cells are blank there too. Listening 10 to 12 (dashed, italic) are the draft extension written against the VCE English study design.</p>
 </div>
 
-<script src="prompts.js"></script>
+<script src="prompts.js?v=3"></script>
 <script>
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 const C = FOLIO.continuum, isExp = lv => lv===C.expected;

@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Prompts, timer and rotation display for the Year 9 Curious Incident speaking and listening folio.">
 <title>Curious Incident · Speaking Folio</title>
-<link rel="stylesheet" href="folio.css">
+<link rel="stylesheet" href="folio.css?v=3">
 <style>
+html{font-size:clamp(15px, .5vw + 9px, 24px)}
+.sheet{max-width:min(96vw,1900px)}
 .steps{counter-reset:s;display:grid;gap:8px;grid-template-columns:repeat(5,1fr)}
 .steps div{counter-increment:s;border:1px solid var(--line);border-radius:10px;background:var(--band);padding:9px 10px;font-size:.8rem;line-height:1.4}
 .steps div::before{content:counter(s);display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--deep);color:var(--on-deep);
@@ -128,7 +130,7 @@
   <div class="dgrid" id="dGrid"></div>
 </div>
 
-<script src="prompts.js"></script>
+<script src="prompts.js?v=3"></script>
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
