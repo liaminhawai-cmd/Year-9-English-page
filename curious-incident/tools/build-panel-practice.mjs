@@ -102,7 +102,7 @@ const L = {
   ws: [ "Passage panel practice worksheet", `${SITE}files/${encodeURIComponent(WS_NAME)}` ],
   talk: [ "Table talk · Session 3", `${SITE}wagoll.html#session-3` ],
   prompts: [ "Prompts page · Session 3", `${SITE}index.html#session-3` ],
-  vocab: [ "Vocab trainer", `${SITE}vocab.html` ],
+  vocab: [ "My glossary", `${SITE}glossary.html` ],
 };
 const LP = [];
 LP.push(new Paragraph({ spacing: { after: 40 }, children: [new TextRun({ text: "Speaking Folio 3a - Passage panel practice", size: 34, font, color: "1F1F1F" })] }));
