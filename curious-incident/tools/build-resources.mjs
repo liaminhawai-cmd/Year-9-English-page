@@ -19,6 +19,8 @@ const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
 const SITE_FILES = ["Curious Incident Speaking Folio.docx", "Curious Incident - Unit Planner.docx",
   "Curious Incident Speaking Folio - Lesson 1 - Personal Response.docx",
   "Curious Incident Speaking Folio - Lesson 2 - I Couldn't Disagree More.docx",
+  "Curious Incident Speaking Folio - Lesson 3a - Passage Panel Practice.docx",
+  "Curious Incident - Passage Panel Practice - Worksheet.docx",
   "Curious Incident Speaking Folio - Lesson 3 - Passage Analysis Panel.docx"];
 mkdirSync(path.join(here, "..", "files"), { recursive: true });
 SITE_FILES.forEach(n => copyFileSync(path.join(repo, "English LA - Year 9 English", n), path.join(here, "..", "files", n)));
@@ -28,7 +30,7 @@ const size = f => { try { const b = statSync(path.join(repo, f)).size; return b 
 const li = f => `<li><a href="${url(f)}">${esc(name(f))}</a> <span class="sz">${size(f)}</span></li>`;
 const Y9 = "English LA - Year 9 English/";
 const groups = [
-  ["Speaking and Listening Folio", "", f => /Curious Incident Speaking Folio|Curious Incident - Unit Planner/.test(f)],
+  ["Speaking and Listening Folio", "", f => /Curious Incident Speaking Folio|Curious Incident - Unit Planner|Passage Panel Practice/.test(f)],
 ];
 const used = new Set();
 const sections = groups.map(([h, sub, test]) => {
@@ -83,6 +85,7 @@ section.g li{margin:2px 0}
   <a class="card" href="${url(Y9 + "Curious Incident - Unit Planner.docx")}"><b>Unit planner</b><span>Kew High School Unit Planner · weeks, links, continuum</span></a>
   <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 1 - Personal Response.docx")}"><b>Lesson 1 · Personal response</b><span>Word</span></a>
   <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 2 - I Couldn't Disagree More.docx")}"><b>Lesson 2 · I couldn't disagree more</b><span>Word</span></a>
+  <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 3a - Passage Panel Practice.docx")}"><b>Lesson 3a · Passage panel practice</b><span>Word · the lesson before Session 3, with its worksheet</span></a>
   <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 3 - Passage Analysis Panel.docx")}"><b>Lesson 3 · Passage analysis panel</b><span>Word</span></a>
 </div>
 <div class="cols">${sections}</div>
