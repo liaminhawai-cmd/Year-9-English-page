@@ -1,5 +1,5 @@
-/* Build resources.html: every current file in the year-9-english repo,
-   grouped, each a link to the file on GitHub. Reads the sibling checkout.
+/* Build resources.html: the Curious Incident files in the year-9-english
+   repo, each a direct link on GitHub. Reads the sibling checkout.
    node tools/build-resources.mjs [path to year-9-english] */
 import { execSync } from "node:child_process";
 import { writeFileSync, statSync } from "node:fs";
@@ -20,12 +20,7 @@ const size = f => { try { const b = statSync(path.join(repo, f)).size; return b 
 const li = f => `<li><a href="${url(f)}">${esc(name(f))}</a> <span class="sz">${size(f)}</span></li>`;
 const Y9 = "English LA - Year 9 English/";
 const groups = [
-  ["This unit · Curious Incident", "Booklet, lesson plans, unit planner, assessment tasks.", f => f.startsWith(Y9 + "Curious Incident") || f === Y9 + "curious dog.pdf" || f.startsWith("English/Unit 3 - Novel Study")],
-  ["Year 9 English · planning", "Unit planners and the team's planning notes.", f => /^English\/(Unit |Yearly|Unit Planner|Period|LA Leader)/.test(f) && !f.startsWith("English/Unit 3 - Novel Study") && !f.includes("Older files")],
-  ["Year 9 English · shared folder", "Task sheets, rubrics, samples and notes for the other units this year.", f => f.startsWith(Y9) && !f.startsWith(Y9 + "Archive/") && !f.startsWith(Y9 + "Meeting Minutes/") && !f.startsWith(Y9 + "Curious Incident") && f !== Y9 + "curious dog.pdf" && !/\.png$/i.test(f)],
-  ["Year 9 English · meeting minutes", "", f => f.startsWith(Y9 + "Meeting Minutes/")],
-  ["Overviews, screenshots and the OneNote export", "", f => (f.startsWith(Y9) && /\.png$/i.test(f)) || f === "Year 9 English.pdf"],
-  ["Enhance 9 and other subjects", "Not this unit. Here because the folder is shared.", f => !f.startsWith(Y9) && !f.startsWith("English/") && f !== "Year 9 English.pdf"],
+  ["Curious Incident", "", f => f.startsWith(Y9 + "Curious Incident") || f === Y9 + "curious dog.pdf" || f.startsWith("English/Unit 3 - Novel Study")],
 ];
 const used = new Set();
 const sections = groups.map(([h, sub, test]) => {
@@ -63,7 +58,7 @@ section.g li{margin:2px 0}
   <div>
     <div class="kicker">Year 9 English</div>
     <h1>Files</h1>
-    <p class="read">Every current file, linked to GitHub. Open a link, then press <b>Download</b> (the raw button) to get the Word or PDF file. Archive folders are not listed: <a href="${TREE}English%20LA%20-%20Year%209%20English/Archive">Archive</a>.</p>
+    <p class="read">Word files download; PDFs open. Sign in to GitHub first. Everything else is in the <a href="${TREE}English%20LA%20-%20Year%209%20English">shared folder</a>.</p>
   </div>
   <nav class="site" aria-label="Folio pages">
     <a href="index.html">Prompts</a>
@@ -82,7 +77,7 @@ section.g li{margin:2px 0}
   <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 3 - Passage Analysis Panel.docx")}"><b>Lesson 3 · Passage analysis panel</b><span>Word</span></a>
   <a class="card" href="${url(Y9 + "Curious Incident - Close Analysis Practice - Worksheet.docx")}"><b>Close analysis practice</b><span>Worksheet and lesson plan · the Mrs Alexander passage</span></a>
 </div>
-<div class="cols">${sections}${rest.length ? `<section class="g"><h2>Other</h2><ul>${rest.map(li).join("")}</ul></section>` : ""}</div>
+<div class="cols">${sections}</div>
 <p class="foot">Built from the repository file list by tools/build-resources.mjs. Rebuild after adding files.</p>
 </div>
 </body>
