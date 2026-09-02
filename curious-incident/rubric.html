@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Rubric for the Curious Incident speaking and listening folio: the school's Speaking and Listening continuum, what counts as evidence in each session, and a teacher observation record for Table 1.">
+<meta name="description" content="Rubric for the Curious Incident speaking and listening folio: the school's Speaking and Listening continuum.">
 <title>Curious Incident · Folio Rubric</title>
 <link rel="stylesheet" href="folio.css">
 <style>
@@ -18,18 +18,8 @@ table.cont{border-collapse:collapse;width:100%;min-width:900px;table-layout:fixe
 .cont td.expected-col{box-shadow:inset 3px 0 0 var(--gold),inset -3px 0 0 var(--gold)}
 .cont td.blank{background:var(--band);opacity:.4}
 .cont td.ext{font-style:italic;border-style:dashed}
-.ev{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media (max-width:800px){.ev{grid-template-columns:1fr}}
-.look{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media (max-width:800px){.look{grid-template-columns:1fr}}
-.look ul{margin:4px 0 0;padding-left:1.1em;font-size:.82rem} .look li{margin:3px 0}
-.obs{border-collapse:collapse;width:100%;margin-top:8px}
-.obs th,.obs td{border:1px solid var(--line);padding:6px 8px;font-size:.8rem;vertical-align:top}
-.obs th{background:var(--band);text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em}
-.obs td.tall{height:78px}
-.obs td.lv{width:120px}
 @page{size:A4 landscape;margin:10mm}
-@media print{ .cont th,.cont td{font-size:8.6pt;padding:5pt 6pt} table.cont{min-width:0} .obs{break-inside:avoid} h2{break-after:avoid} .obssec{break-before:page} }
+@media print{ .cont th,.cont td{font-size:8.6pt;padding:5pt 6pt} table.cont{min-width:0} }
 </style>
 </head>
 <body>
@@ -53,41 +43,6 @@ table.cont{border-collapse:collapse;width:100%;min-width:900px;table-layout:fixe
 
 <div class="wrap"><table class="cont" id="cont"></table></div>
 
-<h2>Where the evidence comes from</h2>
-<div class="ev" id="ev"></div>
-
-<h2>What the teacher listens for at Table 1</h2>
-<p class="small muted">One session, one group at a time. The moves are the ones on the <a href="wagoll.html">Table talk</a> page.</p>
-<div class="look">
-  <div class="card"><h3>Session 1 · Personal response</h3><ul>
-    <li>Feeling with a reason, from the words on the table · Interacting 5 and 7</li>
-    <li>Link to their own life that comes back to the text · Interacting 7</li>
-    <li>Link to a named person's idea · Listening 7, Interacting 7</li>
-    <li>A question that gets a reason out of someone, or infers what they imply · Listening 5 and 8</li>
-    <li>Notices who hasn't spoken · Interacting 10</li>
-  </ul></div>
-  <div class="card"><h3>Session 2 · I couldn't disagree more</h3><ul>
-    <li>A side with a reason from the book · Interacting 5</li>
-    <li>Quotes the opponent's exact words before answering · Listening 8 and 9</li>
-    <li>Reframes the statement into the real question · Listening 10</li>
-    <li>Concedes and keeps the rest of the argument · Interacting 9</li>
-    <li>Reader: reads, runs it, takes no side · Presenting 6, Interacting 8</li>
-  </ul></div>
-  <div class="card"><h3>Session 3 · Passage panel</h3><ul>
-    <li>Feature located in words on the page · Interacting 7</li>
-    <li>'Yes, and' that adds · Listening 11</li>
-    <li>Takes someone else's point further · Listening 11 and 12</li>
-    <li>Turns given by name; first speaker returned to · Interacting 10</li>
-    <li>One clear sentence for the class · Presenting 8</li>
-  </ul></div>
-</div>
-
-<section class="obssec">
-<h2>Teacher observation record · Table 1</h2>
-<p class="small muted">One row per student in the group. Circle the level you heard, write the words you heard. Three copies: one per session.</p>
-<table class="obs" id="obs"></table>
-</section>
-
 <p class="foot">Levels 5 to 11 as published in the school's Speaking and Listening continuum; Listening runs to 9 and Interacting to 10 there, and the blank cells are blank there too. Listening 10 to 12 (dashed, italic) are the draft extension written against the VCE English study design.</p>
 </div>
 
@@ -98,9 +53,6 @@ const C = FOLIO.continuum, isExp = lv => lv===C.expected;
 document.getElementById("cont").innerHTML = `<colgroup><col class="lbl">${C.levels.map(()=>"<col>").join("")}</colgroup>
 <thead><tr><th class="rowlab">Substrand</th>${C.levels.map(lv=>`<th${isExp(lv)?' class="expected"':''}>${lv}${isExp(lv)?'<span class="sub">Year 9 expected</span>':''}</th>`).join("")}</tr></thead>
 <tbody>${C.strands.map(s=>`<tr><th class="rowlab" scope="row">${esc(s.name)}</th>${C.levels.map(lv=>s.levels[lv]?`<td class="${isExp(lv)?'expected-col':''}${s.extension&&s.extension.includes(lv)?' ext':''}">${esc(s.levels[lv])}</td>`:`<td class="blank${isExp(lv)?" expected-col":""}"></td>`).join("")}</tr>`).join("")}</tbody>`;
-document.getElementById("ev").innerHTML = C.strands.map(s=>`<div class="card"><h3>${esc(s.name)}</h3><p class="small" style="margin:0">${esc(FOLIO.evidence[s.key])}</p></div>`).join("");
-document.getElementById("obs").innerHTML = `<thead><tr><th style="width:150px">Student</th><th class="lv">Listening<br><span style="font-weight:400">5 · 6 · 7 · 8 · 9 · 10 · 11 · 12</span></th><th class="lv">Interacting<br><span style="font-weight:400">5 · 6 · 7 · 8 · 9 · 10</span></th><th class="lv">Presenting<br><span style="font-weight:400">5 · 6 · 7 · 8 · 9 · 10 · 11</span></th><th>What I heard (the words)</th></tr></thead>
-<tbody>${Array.from({length:6},()=>`<tr><td class="tall"></td><td></td><td></td><td></td><td></td></tr>`).join("")}</tbody>`;
 document.getElementById("print").onclick = ()=>window.print();
 </script>
 </body>
