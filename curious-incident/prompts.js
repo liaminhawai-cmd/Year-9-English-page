@@ -13,7 +13,7 @@ const FOLIO = {
   unit: "Year 9 English · Speaking and Listening Folio",
   tables: 6,
   teacherTable: 1,
-  talkMinutes: 5,
+  talkMinutes: 4,
   writeMinutes: 2,
 
   /* Learning continuum. Levels 5 to 9 (Listening), 5 to 10 (Interacting) and
@@ -83,7 +83,7 @@ const FOLIO = {
   /* Teacher-facing. Read by the lesson plan builder, not shown on student pages. */
   run: [
     "Groups of four or five. Each group starts at a different table.",
-    "One prompt per table. Five minutes of talk, then two minutes writing on the session page.",
+    "One prompt per table. Four minutes of talk, then two minutes writing on the session page.",
     "Groups move up one table each rotation. Six rotations covers all six prompts.",
     "Table 1 is the teacher table: the teacher listens and records against the continuum on the front page of the folio.",
   ],
