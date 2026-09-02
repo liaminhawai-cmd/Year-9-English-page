@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Prompts, timer and rotation display for the Year 9 Curious Incident speaking and listening folio.">
+<title>Curious Incident · Speaking Folio</title>
+<link rel="stylesheet" href="folio.css">
+<style>
+.steps{counter-reset:s;display:grid;gap:8px;grid-template-columns:repeat(5,1fr)}
+.steps div{counter-increment:s;border:1px solid var(--line);border-radius:10px;background:var(--band);padding:9px 10px;font-size:.8rem;line-height:1.4}
+.steps div::before{content:counter(s);display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--deep);color:var(--on-deep);
+  font-weight:800;font-size:.75rem;align-items:center;justify-content:center;margin-bottom:4px}
+@media (max-width:900px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.steps{grid-template-columns:1fr}}
+
+.sess-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 10px}
+.sess-tabs button{font-size:.86rem}
+.sess-head{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-bottom:12px}
+@media (max-width:760px){.sess-head{grid-template-columns:1fr}}
+.sess-head .card h3{color:var(--deep)}
+.sess-head ol{margin:0;padding-left:1.2em;font-size:.86rem} .sess-head ol li{margin:3px 0}
+.write{border-left:4px solid var(--listen)}
+.pre{border-left:4px solid var(--gold);font-size:.84rem}
+
+.stations{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:900px){.stations{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.stations{grid-template-columns:1fr}}
+.station{border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);padding:12px 13px;display:flex;flex-direction:column;gap:6px}
+.station.teacher{box-shadow:inset 0 0 0 2px var(--gold)}
+.station .num{display:flex;align-items:center;gap:8px;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--deep)}
+.station .talk{font-size:.82rem;margin:0;padding-left:1.1em} .station .talk li{margin:3px 0}
+.spare{margin-top:10px;font-size:.8rem;color:var(--muted)} .spare li{margin:2px 0}
+
+.starters{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media (max-width:1000px){.starters{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:600px){.starters{grid-template-columns:1fr}}
+.starters .card{border-left:5px solid;padding:9px 10px}
+.starters .card ul{margin:4px 0 0;padding-left:1.1em;font-size:.8rem}
+.st-listen{border-left-color:var(--listen)} .st-listen h3{color:var(--listen)}
+.st-respond{border-left-color:var(--respond)} .st-respond h3{color:var(--respond)}
+.st-text{border-left-color:var(--text)} .st-text h3{color:var(--text)}
+.st-invite{border-left-color:var(--invite)} .st-invite h3{color:var(--invite)}
+
+/* ---------- display mode (projector) ---------- */
+#display{position:fixed;inset:0;background:var(--deep);color:var(--on-deep);z-index:50;display:none;flex-direction:column;padding:16px 20px;overflow:auto}
+#display.on{display:flex}
+#display .top{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-bottom:10px}
+#display .top h2{color:var(--on-deep);margin:0;font-size:1.3rem}
+#display .phase{font-size:1.05rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.14)}
+#display .phase.write{background:var(--listen)}
+#display .clock{font-variant-numeric:tabular-nums;font-size:clamp(2rem,6vw,3.4rem);font-weight:800;line-height:1;margin-left:auto}
+#display .clock.low{color:#ffd27a}
+#display .tools button{background:rgba(255,255,255,.1);color:var(--on-deep);border-color:rgba(255,255,255,.35)}
+#display .tools button[aria-pressed="true"]{background:var(--on-deep);color:var(--deep)}
+#display .dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex:1}
+@media (max-width:900px){#display .dgrid{grid-template-columns:repeat(2,1fr)}}
+#display .dst{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+#display .dst.teacher{border-color:var(--gold);box-shadow:inset 0 0 0 2px var(--gold)}
+#display .dst .num{font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.8;display:flex;gap:8px;align-items:center}
+#display .dst .who{font-size:.85rem;font-weight:700;color:#ffd27a}
+#display .dst blockquote{background:rgba(255,255,255,.06);border-left-color:#ffd27a;color:var(--on-deep);font-size:clamp(.9rem,1.5vw,1.15rem)}
+#display .dst blockquote .src{color:rgba(255,255,255,.7)}
+#display .dst .talk{font-size:clamp(.78rem,1.2vw,.95rem);padding-left:1.1em;margin:0;opacity:.95}
+#display .writeq{background:var(--listen);color:#fff;border-radius:12px;padding:12px 16px;font-size:clamp(1rem,2vw,1.4rem);font-weight:700;display:none;margin-bottom:12px}
+#display.phase-write .writeq{display:block}
+#display .mins{display:inline-flex;align-items:center;gap:4px;font-size:.8rem}
+#display .mins input{width:46px;font:inherit;padding:3px 5px;border-radius:6px;border:1px solid rgba(255,255,255,.4);background:transparent;color:inherit}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header class="mast">
+  <div>
+    <div class="kicker">Year 9 English · The Curious Incident of the Dog in the Night-Time</div>
+    <h1>Speaking and Listening Folio</h1>
+    <p class="read">Three sessions, six tables, one prompt each. <b>Talk for five, write for two, move.</b> Table 1 is the teacher's table.</p>
+  </div>
+  <nav class="site" aria-label="Folio pages">
+    <a href="index.html" aria-current="page">Prompts</a>
+    <a href="wagoll.html">WAGOLL wall</a>
+    <a href="rubric.html">Rubric</a>
+    <a href="groups.html">Groups</a>
+    <a href="booklet.html">Print booklet</a>
+  </nav>
+</header>
+
+<h2>How a session runs</h2>
+<div class="steps" id="steps"></div>
+
+<div class="tools" style="margin-top:14px">
+  <button class="primary" id="openDisplay">▶ Display mode with timer</button>
+  <span class="small muted">Full screen for the projector: the six prompts for the chosen session, the rotation counter, and the talk / write timer.</span>
+</div>
+
+<div class="sess-tabs" id="tabs" role="tablist"></div>
+<section id="session"></section>
+
+<h2>Sentence starters</h2>
+<p class="small muted">Colours match the WAGOLL wall. Use them until you don't need them.</p>
+<div class="starters" id="starters"></div>
+
+<p class="foot">Draft prompts. Quotes are kept short; check wording and add page numbers from the class edition before printing. Groups saved on the <a href="groups.html">Groups</a> page appear in display mode so each table shows who should be there. Nothing on this site is stored anywhere except in this browser.</p>
+</div>
+
+<!-- ---------- display mode ---------- -->
+<div id="display" aria-hidden="true">
+  <div class="top">
+    <h2 id="dTitle"></h2>
+    <span class="phase" id="dPhase">Rotation 1 of 6 · Talk</span>
+    <div class="clock" id="dClock">5:00</div>
+  </div>
+  <div class="tools">
+    <button id="dStart" class="primary">Start</button>
+    <button id="dPause">Pause</button>
+    <button id="dSkip">Skip to next phase</button>
+    <button id="dPrev">◀ Rotation</button>
+    <button id="dNext">Rotation ▶</button>
+    <span class="mins">Talk <input id="dTalk" type="number" min="1" max="15" value="5"> min</span>
+    <span class="mins">Write <input id="dWrite" type="number" min="1" max="10" value="2"> min</span>
+    <button id="dSound" aria-pressed="true">Sound</button>
+    <span class="sp"></span>
+    <button id="dClose">Close</button>
+  </div>
+  <div class="writeq" id="dWriteQ"></div>
+  <div class="dgrid" id="dGrid"></div>
+</div>
+
+<script src="prompts.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+let cur = 0;
+
+document.getElementById("steps").innerHTML = FOLIO.howItWorks.map(s=>`<div>${esc(s)}</div>`).join("");
+
+/* sentence starters */
+document.getElementById("starters").innerHTML = FOLIO.starters.map(g=>`
+  <div class="card st-${g.key}"><h3>${esc(g.name)}</h3><ul>${g.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("");
+
+/* session tabs */
+const tabs = document.getElementById("tabs");
+tabs.innerHTML = FOLIO.sessions.map((s,i)=>`<button role="tab" data-i="${i}" aria-pressed="${i===cur}">Session ${s.n} · ${esc(s.title)}</button>`).join("");
+tabs.querySelectorAll("button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i; renderSession();});
+
+function stationCard(st){
+  return `<div class="station${st.teacher?" teacher":""}">
+    <div class="num">Table ${st.n} ${st.teacher?'<span class="tag tag-teacher">Teacher table</span>':""}</div>
+    <blockquote>${esc(st.quote)}${st.source?`<span class="src">${esc(st.source)}</span>`:""}</blockquote>
+    <ol class="talk">${st.talk.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>
+  </div>`;
+}
+
+function renderSession(){
+  const s = FOLIO.sessions[cur];
+  tabs.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed", +b.dataset.i===cur));
+  $("#session").innerHTML = `
+    <div class="sess-head">
+      <div class="card">
+        <h3>Session ${s.n} · ${esc(s.title)}</h3>
+        <p class="small muted">${esc(s.focus)}</p>
+        <ol>${s.how.map(h=>`<li>${esc(h)}</li>`).join("")}</ol>
+        ${s.panelQuestions?`<p class="small" style="margin-top:8px"><b>The three panel questions</b></p><ol>${s.panelQuestions.map(q=>`<li>${esc(q)}</li>`).join("")}</ol>`:""}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="card write"><h3>Write for two minutes</h3><p class="small" style="margin:0">${esc(s.write)}</p></div>
+        <div class="card pre"><h3>Pre-teach</h3><p style="margin:0">${esc(s.preTeach)}</p></div>
+      </div>
+    </div>
+    <div class="stations">${s.stations.map(stationCard).join("")}</div>
+    ${s.spare&&s.spare.length?`<div class="spare"><b>Spare prompts</b> (swap one in, or use for a seventh table):<ul class="tight">${
+      s.spare.map(p=>`<li>${esc(p.quote)}${p.source?` <span class="muted">(${esc(p.source)})</span>`:""}</li>`).join("")}</ul></div>`:""}`;
+}
+renderSession();
+
+/* ---------- display mode ---------- */
+const D = {rot:1, phase:"talk", left:0, timer:null, running:false, sound:true};
+const disp = document.getElementById("display");
+const groupsFor = n => { try{ const g = JSON.parse(localStorage.getItem("ci_groups")||"null"); return g && g.sessions && g.sessions[n-1] || null; }catch(e){ return null; } };
+
+function whoAt(table){
+  const s = FOLIO.sessions[cur];
+  const g = groupsFor(s.n); if(!g) return "";
+  const groups = g.groups.filter(x=>x.length);
+  const plan = FOLIO.rotation(groups.length, FOLIO.tables);
+  const row = plan[D.rot-1] || [];
+  const idx = row.indexOf(table);
+  if(idx<0) return "";
+  return `<div class="who">Group ${idx+1}: ${esc(groups[idx].join(", "))}</div>`;
+}
+function renderDisplay(){
+  const s = FOLIO.sessions[cur];
+  $("#dTitle").textContent = `Session ${s.n} · ${s.title}`;
+  $("#dPhase").textContent = `Rotation ${D.rot} of ${FOLIO.tables} · ${D.phase==="talk"?"Talk":"Write"}`;
+  $("#dPhase").classList.toggle("write", D.phase==="write");
+  disp.classList.toggle("phase-write", D.phase==="write");
+  $("#dWriteQ").textContent = "Write: " + s.write;
+  $("#dGrid").innerHTML = s.stations.map(st=>`<div class="dst${st.teacher?" teacher":""}">
+      <div class="num">Table ${st.n} ${st.teacher?'<span class="tag tag-teacher">Teacher table</span>':""}</div>
+      ${whoAt(st.n)}
+      <blockquote>${esc(st.quote)}${st.source?`<span class="src">${esc(st.source)}</span>`:""}</blockquote>
+      <ol class="talk">${st.talk.map(t=>`<li>${esc(t)}</li>`).join("")}</ol></div>`).join("");
+  drawClock();
+}
+const mins = () => D.phase==="talk" ? +$("#dTalk").value||5 : +$("#dWrite").value||2;
+function drawClock(){
+  const m = Math.floor(D.left/60), s = D.left%60;
+  $("#dClock").textContent = `${m}:${String(s).padStart(2,"0")}`;
+  $("#dClock").classList.toggle("low", D.left<=30);
+  $("#dStart").textContent = D.running ? "Running" : (D.left===mins()*60 ? "Start" : "Resume");
+}
+function beep(n=1){
+  if(!D.sound) return;
+  try{
+    const ac = new (window.AudioContext||window.webkitAudioContext)();
+    for(let i=0;i<n;i++){
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.connect(g); g.connect(ac.destination); o.frequency.value = 880;
+      const t = ac.currentTime + i*0.35;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.4,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.3);
+      o.start(t); o.stop(t+0.32);
+    }
+  }catch(e){}
+}
+function resetPhase(){ D.left = mins()*60; drawClock(); }
+function tick(){
+  if(D.left>0){ D.left--; drawClock(); if(D.left===0){ beep(D.phase==="talk"?1:2); nextPhase(); } }
+}
+function start(){ if(D.running) return; D.running=true; D.timer=setInterval(tick,1000); drawClock(); }
+function pause(){ D.running=false; clearInterval(D.timer); drawClock(); }
+function nextPhase(){
+  pause();
+  if(D.phase==="talk"){ D.phase="write"; }
+  else { D.phase="talk"; if(D.rot<FOLIO.tables) D.rot++; else { renderDisplay(); return; } }
+  resetPhase(); renderDisplay(); start();
+}
+$("#openDisplay").onclick = ()=>{ D.rot=1; D.phase="talk"; pause(); resetPhase(); renderDisplay(); disp.classList.add("on"); disp.setAttribute("aria-hidden","false"); document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(()=>{}); };
+$("#dClose").onclick = ()=>{ pause(); disp.classList.remove("on"); disp.setAttribute("aria-hidden","true"); document.fullscreenElement && document.exitFullscreen().catch(()=>{}); };
+$("#dStart").onclick = start;
+$("#dPause").onclick = pause;
+$("#dSkip").onclick = ()=>{ nextPhase(); };
+$("#dNext").onclick = ()=>{ pause(); if(D.rot<FOLIO.tables) D.rot++; D.phase="talk"; resetPhase(); renderDisplay(); };
+$("#dPrev").onclick = ()=>{ pause(); if(D.rot>1) D.rot--; D.phase="talk"; resetPhase(); renderDisplay(); };
+$("#dTalk").onchange = $("#dWrite").onchange = ()=>{ if(!D.running) resetPhase(); };
+$("#dSound").onclick = e=>{ D.sound=!D.sound; e.currentTarget.setAttribute("aria-pressed",String(D.sound)); };
+document.addEventListener("keydown", e=>{ if(!disp.classList.contains("on")) return; if(e.key==="Escape") $("#dClose").click(); if(e.key===" "){ e.preventDefault(); D.running?pause():start(); } });
+</script>
+</body>
+</html>

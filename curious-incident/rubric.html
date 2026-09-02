@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Rubric for the Curious Incident speaking and listening folio: the school's Speaking and Listening continuum, what counts as evidence in each session, and a teacher observation record for Table 1.">
+<title>Curious Incident · Folio Rubric</title>
+<link rel="stylesheet" href="folio.css">
+<style>
+.wrap{overflow-x:auto;border:1px solid var(--line);border-radius:11px}
+table.cont{border-collapse:collapse;width:100%;min-width:900px;table-layout:fixed}
+.cont th,.cont td{border:1px solid var(--line);padding:8px 9px;vertical-align:top;text-align:left;font-size:.8rem;line-height:1.4}
+.cont col.lbl{width:120px}
+.cont thead th{background:var(--deep);color:var(--on-deep);text-align:center;font-size:.95rem}
+.cont thead th.expected{background:var(--gold)}
+.cont thead th .sub{display:block;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.cont th.rowlab{font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--deep);background:var(--band);vertical-align:middle}
+.cont td.expected-col{box-shadow:inset 3px 0 0 var(--gold),inset -3px 0 0 var(--gold)}
+.cont td.blank{background:var(--band);opacity:.4}
+.ev{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:800px){.ev{grid-template-columns:1fr}}
+.look{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:800px){.look{grid-template-columns:1fr}}
+.look ul{margin:4px 0 0;padding-left:1.1em;font-size:.82rem} .look li{margin:3px 0}
+.obs{border-collapse:collapse;width:100%;margin-top:8px}
+.obs th,.obs td{border:1px solid var(--line);padding:6px 8px;font-size:.8rem;vertical-align:top}
+.obs th{background:var(--band);text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em}
+.obs td.tall{height:78px}
+.obs td.lv{width:120px}
+@page{size:A4 landscape;margin:10mm}
+@media print{ .cont th,.cont td{font-size:8.6pt;padding:5pt 6pt} table.cont{min-width:0} .obs{break-inside:avoid} h2{break-after:avoid} .obssec{break-before:page} }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header class="mast">
+  <div>
+    <div class="kicker">Year 9 English · Curious Incident · Speaking folio</div>
+    <h1>Rubric</h1>
+    <p class="read">Straight from the school's Speaking and Listening continuum. <b>Level 9 is the Year 9 expected level.</b> The three sessions give evidence for Listening and Interacting at every table, and for Presenting when you read to the table or share back.</p>
+  </div>
+  <nav class="site" aria-label="Folio pages">
+    <a href="index.html">Prompts</a>
+    <a href="wagoll.html">WAGOLL wall</a>
+    <a href="rubric.html" aria-current="page">Rubric</a>
+    <a href="groups.html">Groups</a>
+    <a href="booklet.html">Print booklet</a>
+  </nav>
+</header>
+
+<div class="tools noprint"><button id="print">Print / save PDF</button></div>
+
+<div class="wrap"><table class="cont" id="cont"></table></div>
+
+<h2>Where the evidence comes from</h2>
+<div class="ev" id="ev"></div>
+
+<h2>What the teacher listens for at Table 1</h2>
+<p class="small muted">One session, one group at a time. The moves are the four colours on the <a href="wagoll.html">WAGOLL wall</a>.</p>
+<div class="look">
+  <div class="card"><h3>Session 1 · Personal response</h3><ul>
+    <li><span class="m m-respond">Says how the quote hit them, with a because</span> · Interacting 5 to 7</li>
+    <li><span class="m m-listen">Asks what someone meant before answering</span> · Listening 5 to 7</li>
+    <li><span class="m m-text">Goes back to the words when they respond</span> · Listening 8</li>
+    <li><span class="m m-invite">Notices who hasn't spoken</span> · Interacting 10</li>
+  </ul></div>
+  <div class="card"><h3>Session 2 · I couldn't disagree more</h3><ul>
+    <li><span class="m m-voice">Reader: reads clearly, then runs the talk without taking over</span> · Presenting 6 to 8, Interacting 8</li>
+    <li><span class="m m-respond">Takes a side and gives a reason from the book</span> · Interacting 5</li>
+    <li><span class="m m-listen">Answers the other person's actual reason</span> · Listening 8 to 9</li>
+    <li><span class="m m-voice">Changes tone between persuading and conceding</span> · Interacting 9</li>
+  </ul></div>
+  <div class="card"><h3>Session 3 · Passage panel</h3><ul>
+    <li><span class="m m-text">Names a writing feature and the words it lives in</span> · Interacting 7</li>
+    <li><span class="m m-listen">Refuses a vague word and asks for the evidence</span> · Listening 9</li>
+    <li><span class="m m-respond">Turns an observation into a claim about effect</span> · Interacting 7</li>
+    <li><span class="m m-voice">Share-back: one clear sentence to the class</span> · Presenting 8 to 11</li>
+  </ul></div>
+</div>
+
+<section class="obssec">
+<h2>Teacher observation record · Table 1</h2>
+<p class="small muted">One row per student in the group. Circle the level you heard, write the words you heard. Three copies: one per session.</p>
+<table class="obs" id="obs"></table>
+</section>
+
+<p class="foot">Continuum levels 5 to 11 as published in the school's Speaking and Listening continuum. Listening runs to level 9 and Interacting to level 10 in the source document; the blank cells are blank there too.</p>
+</div>
+
+<script src="prompts.js"></script>
+<script>
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const C = FOLIO.continuum, isExp = lv => lv===C.expected;
+document.getElementById("cont").innerHTML = `<colgroup><col class="lbl">${C.levels.map(()=>"<col>").join("")}</colgroup>
+<thead><tr><th class="rowlab">Substrand</th>${C.levels.map(lv=>`<th${isExp(lv)?' class="expected"':''}>${lv}${isExp(lv)?'<span class="sub">Year 9 expected</span>':''}</th>`).join("")}</tr></thead>
+<tbody>${C.strands.map(s=>`<tr><th class="rowlab" scope="row">${esc(s.name)}</th>${C.levels.map(lv=>s.levels[lv]?`<td${isExp(lv)?' class="expected-col"':''}>${esc(s.levels[lv])}</td>`:`<td class="blank${isExp(lv)?" expected-col":""}"></td>`).join("")}</tr>`).join("")}</tbody>`;
+document.getElementById("ev").innerHTML = C.strands.map(s=>`<div class="card"><h3>${esc(s.name)}</h3><p class="small" style="margin:0">${esc(FOLIO.evidence[s.key])}</p></div>`).join("");
+document.getElementById("obs").innerHTML = `<thead><tr><th style="width:150px">Student</th><th class="lv">Listening<br><span style="font-weight:400">5 · 6 · 7 · 8 · 9</span></th><th class="lv">Interacting<br><span style="font-weight:400">5 · 6 · 7 · 8 · 9 · 10</span></th><th class="lv">Presenting<br><span style="font-weight:400">5 · 6 · 7 · 8 · 9 · 10 · 11</span></th><th>What I heard (the words)</th></tr></thead>
+<tbody>${Array.from({length:6},()=>`<tr><td class="tall"></td><td></td><td></td><td></td><td></td></tr>`).join("")}</tbody>`;
+document.getElementById("print").onclick = ()=>window.print();
+</script>
+</body>
+</html>

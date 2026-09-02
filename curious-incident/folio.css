@@ -1,0 +1,114 @@
+/* Shared look for the Curious Incident speaking folio pages.
+   Colour is a taxonomy: each of the four discussion moves owns one colour,
+   used identically on the WAGOLL wall, the sentence starters and the rubric. */
+:root{
+  --paper:#fbf8f1; --bg:#efe9dd; --ink:#1f2320; --muted:#645d52; --line:#d6cbb8;
+  --deep:#22304a; --on-deep:#fbf8f1; --band:#f4efe4; --accent:#b7361f; --accent-soft:#f6ddd6;
+  --gold:#8b681e; --gold-soft:#f6e7c2;
+  --shadow:0 1px 2px rgba(40,33,20,.06),0 4px 14px rgba(40,33,20,.08);
+  --listen:#176b87; --listen-soft:#d8edf4;
+  --respond:#357a46; --respond-soft:#dff0df;
+  --text:#a34d1d; --text-soft:#f7e3d4;
+  --invite:#744f91; --invite-soft:#eadff2;
+  --voice:#53666b; --voice-soft:#e2eaeb;
+  --radius:12px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#1b1e1c; --bg:#111312; --ink:#eae5db; --muted:#a49a8b; --line:#3a4038;
+    --deep:#cfd9e8; --on-deep:#111312; --band:#232725; --accent:#e8705a; --accent-soft:#3a1f19;
+    --gold:#e0b64c; --gold-soft:#3a2f10;
+    --shadow:0 1px 2px rgba(0,0,0,.5);
+    --listen:#6fc0da; --listen-soft:#12303a;
+    --respond:#74c288; --respond-soft:#15301d;
+    --text:#e89a63; --text-soft:#3a2417;
+    --invite:#bda0d8; --invite-soft:#2b1f3a;
+    --voice:#a3b6bb; --voice-soft:#232c2e;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1b1e1c; --bg:#111312; --ink:#eae5db; --muted:#a49a8b; --line:#3a4038;
+  --deep:#cfd9e8; --on-deep:#111312; --band:#232725; --accent:#e8705a; --accent-soft:#3a1f19;
+  --gold:#e0b64c; --gold-soft:#3a2f10;
+  --shadow:0 1px 2px rgba(0,0,0,.5);
+  --listen:#6fc0da; --listen-soft:#12303a;
+  --respond:#74c288; --respond-soft:#15301d;
+  --text:#e89a63; --text-soft:#3a2417;
+  --invite:#bda0d8; --invite-soft:#2b1f3a;
+  --voice:#a3b6bb; --voice-soft:#232c2e;
+}
+
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);line-height:1.5;
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.sheet{max-width:1240px;margin:14px auto;background:var(--paper);border:1px solid var(--line);
+       border-radius:14px;box-shadow:var(--shadow);padding:20px 22px 26px}
+@media (max-width:620px){.sheet{margin:0;border:0;border-radius:0;padding:14px}}
+
+/* masthead + nav */
+.mast{border-bottom:3px solid var(--deep);padding-bottom:10px;margin-bottom:14px;
+      display:flex;flex-wrap:wrap;gap:8px 18px;align-items:flex-end;justify-content:space-between}
+.kicker{text-transform:uppercase;letter-spacing:.14em;font-size:.7rem;font-weight:800;color:var(--muted)}
+.mast h1{font-size:clamp(1.4rem,3vw,2.2rem);line-height:1.05;color:var(--deep);margin:.15rem 0 .2rem;letter-spacing:-.015em}
+.mast .read{font-size:.84rem;color:var(--muted);max-width:60ch}
+.mast .read b{color:var(--ink)}
+nav.site{display:flex;flex-wrap:wrap;gap:6px}
+nav.site a{font-size:.8rem;font-weight:700;padding:6px 11px;border-radius:999px;border:1px solid var(--line);
+           color:var(--ink);text-decoration:none;background:var(--band);min-height:34px;display:inline-flex;align-items:center}
+nav.site a[aria-current="page"]{background:var(--deep);color:var(--on-deep);border-color:var(--deep)}
+nav.site a:hover{border-color:var(--deep)}
+
+h2{font-size:1.15rem;color:var(--deep);margin:22px 0 8px}
+h3{font-size:1rem;margin:0 0 4px}
+p{margin:0 0 .5rem}
+.muted{color:var(--muted)}
+.small{font-size:.8rem}
+
+/* buttons */
+button,.btn{font:inherit;font-size:.82rem;font-weight:600;padding:7px 13px;border-radius:999px;
+            border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;
+            display:inline-flex;align-items:center;gap:6px;min-height:36px;text-decoration:none}
+button:hover,.btn:hover{border-color:var(--deep)}
+button[aria-pressed="true"]{background:var(--deep);color:var(--on-deep);border-color:var(--deep)}
+button.primary,.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+button:disabled{opacity:.45;cursor:default}
+.tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0 12px}
+.tools .sp{flex:1}
+
+/* the four discussion moves */
+.m{font-weight:600;text-decoration-line:underline;text-underline-offset:2.5px;text-decoration-thickness:1.3px}
+.m-listen{color:var(--listen);text-decoration-color:var(--listen);text-decoration-style:solid}
+.m-respond{color:var(--respond);text-decoration-color:var(--respond);text-decoration-style:dashed}
+.m-text{color:var(--text);text-decoration-color:var(--text);text-decoration-style:dotted}
+.m-invite{color:var(--invite);text-decoration-color:var(--invite);text-decoration-style:double}
+.m-voice{color:var(--voice);font-style:italic;font-weight:500;text-decoration:none}
+.tag{display:inline-block;font-size:.66rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+     padding:2px 7px;border-radius:999px;border:1px solid}
+.tag-listen{color:var(--listen);border-color:var(--listen);background:var(--listen-soft)}
+.tag-respond{color:var(--respond);border-color:var(--respond);background:var(--respond-soft)}
+.tag-text{color:var(--text);border-color:var(--text);background:var(--text-soft)}
+.tag-invite{color:var(--invite);border-color:var(--invite);background:var(--invite-soft)}
+.tag-voice{color:var(--voice);border-color:var(--voice);background:var(--voice-soft)}
+.tag-teacher{color:var(--gold);border-color:var(--gold);background:var(--gold-soft)}
+
+/* cards */
+.card{border:1px solid var(--line);border-radius:var(--radius);background:var(--band);padding:12px 14px}
+.grid{display:grid;gap:10px}
+.g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+@media (max-width:900px){.g3{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.g3,.g2{grid-template-columns:1fr}}
+blockquote{margin:0 0 8px;padding:8px 12px;border-left:4px solid var(--accent);background:var(--paper);
+           border-radius:6px;font-family:Georgia,"Times New Roman",serif;font-size:1rem;line-height:1.5}
+blockquote .src{display:block;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--muted);margin-top:4px}
+ul.tight{margin:0;padding-left:1.2em} ul.tight li{margin:2px 0}
+
+.foot{margin-top:18px;padding-top:9px;border-top:1px solid var(--line);font-size:.75rem;color:var(--muted);line-height:1.5}
+.foot a{color:inherit}
+
+@media print{
+  body{background:#fff}
+  .sheet{max-width:none;margin:0;padding:0;border:0;box-shadow:none;background:#fff}
+  nav.site,.noprint,.tools{display:none!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}

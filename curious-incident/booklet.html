@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Printable student booklet for the Curious Incident speaking and listening folio: rubric on the front, one page per table with the prompt and room to write what the table said.">
+<title>Curious Incident · Folio Booklet</title>
+<link rel="stylesheet" href="folio.css">
+<style>
+/* Screen: pages stacked. Print: A4 portrait, one station per page. */
+.page{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16mm 14mm;margin:0 auto 14px;max-width:210mm;min-height:280mm;position:relative}
+.page .pg{position:absolute;bottom:8mm;right:14mm;font-size:.68rem;color:var(--muted)}
+.cover{display:flex;flex-direction:column;justify-content:space-between}
+.cover .kicker{font-size:.8rem}
+.cover h1{font-size:2.4rem;color:var(--deep);line-height:1.05;margin:10px 0 6px}
+.cover .novel{font-family:Georgia,serif;font-size:1.35rem;margin-bottom:24px}
+.cover .novel i{display:block;font-size:.9rem;color:var(--muted);font-style:normal;margin-top:2px}
+.field{display:grid;grid-template-columns:90px 1fr;gap:8px;align-items:end;margin:14px 0;font-weight:700;font-size:.95rem}
+.field span{border-bottom:1.5px solid var(--ink);height:26px}
+.cover .blurb{font-size:.9rem;line-height:1.55;max-width:60ch}
+.cover .blurb ol{padding-left:1.2em;margin:6px 0}
+
+h2.ph{font-size:1.25rem;color:var(--deep);border-bottom:2px solid var(--deep);padding-bottom:4px;margin:0 0 10px}
+table.cont{border-collapse:collapse;width:100%;table-layout:fixed}
+.cont th,.cont td{border:1px solid var(--line);padding:5px 6px;vertical-align:top;text-align:left;font-size:.68rem;line-height:1.35}
+.cont thead th{background:var(--deep);color:var(--on-deep);text-align:center;font-size:.8rem}
+.cont thead th.expected{background:var(--gold)}
+.cont thead th .sub{display:block;font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.cont th.rowlab{width:74px;font-size:.62rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--deep);background:var(--band);vertical-align:middle}
+.cont td.expected-col{box-shadow:inset 2px 0 0 var(--gold),inset -2px 0 0 var(--gold)}
+.cont td.blank{background:var(--band)}
+.ev{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.ev .card{padding:8px 10px;font-size:.74rem} .ev h3{font-size:.8rem;color:var(--deep)}
+.signoff{margin-top:12px;border-collapse:collapse;width:100%}
+.signoff th,.signoff td{border:1px solid var(--line);padding:6px 8px;font-size:.74rem;text-align:left}
+.signoff th{background:var(--band);font-size:.64rem;text-transform:uppercase;letter-spacing:.06em}
+.signoff td{height:34px}
+
+.steps{counter-reset:s;display:grid;gap:7px;grid-template-columns:1fr}
+.steps div{counter-increment:s;border:1px solid var(--line);border-radius:8px;background:var(--band);padding:7px 9px 7px 36px;font-size:.84rem;line-height:1.4;position:relative}
+.steps div::before{content:counter(s);position:absolute;left:9px;top:8px;width:20px;height:20px;border-radius:50%;background:var(--deep);color:var(--on-deep);font-weight:800;font-size:.7rem;display:flex;align-items:center;justify-content:center}
+.starters{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+.starters .card{border-left:5px solid;padding:7px 9px} .starters h3{font-size:.8rem}
+.starters ul{margin:3px 0 0;padding-left:1.1em;font-size:.76rem}
+.st-listen{border-left-color:var(--listen)} .st-listen h3{color:var(--listen)}
+.st-respond{border-left-color:var(--respond)} .st-respond h3{color:var(--respond)}
+.st-text{border-left-color:var(--text)} .st-text h3{color:var(--text)}
+.st-invite{border-left-color:var(--invite)} .st-invite h3{color:var(--invite)}
+
+.sess-intro .focus{font-size:.95rem;color:var(--muted);margin-bottom:8px}
+.sess-intro ol{padding-left:1.2em;font-size:.9rem} .sess-intro li{margin:4px 0}
+.sess-intro .card{margin-top:10px}
+.sess-intro .card h3{font-size:.85rem;color:var(--deep)}
+.sess-intro .write{border-left:4px solid var(--listen)}
+.sess-intro .stationlist{margin-top:12px;font-size:.8rem}
+.sess-intro .stationlist td{padding:3px 6px;vertical-align:top;border-bottom:1px solid var(--line)}
+.sess-intro .stationlist td:first-child{font-weight:800;white-space:nowrap;color:var(--deep)}
+
+.station .head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--deep);padding-bottom:4px;margin-bottom:10px}
+.station .head b{font-size:1.1rem;color:var(--deep)}
+.station .head span{font-size:.72rem;color:var(--muted)}
+.station blockquote{font-size:1.05rem;margin-bottom:10px}
+.station .talk{margin:0 0 12px;padding-left:1.2em;font-size:.9rem} .station .talk li{margin:3px 0}
+.station .lab{font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--deep);margin:10px 0 2px;display:flex;justify-content:space-between}
+.station .lab i{font-weight:500;letter-spacing:0;text-transform:none;font-style:normal;color:var(--muted)}
+.rule{height:8.6mm;border-bottom:1px solid var(--line)}
+.meta{display:grid;grid-template-columns:1fr 2fr;gap:12px}
+.meta .rule{margin-top:2px}
+
+.obs{border-collapse:collapse;width:100%;margin-top:6px}
+.obs th,.obs td{border:1px solid var(--line);padding:6px 8px;font-size:.78rem;vertical-align:top;text-align:left}
+.obs th{background:var(--band);font-size:.66rem;text-transform:uppercase;letter-spacing:.06em}
+.obs td.tall{height:60mm}
+.self{border-collapse:collapse;width:100%;margin-top:6px}
+.self th,.self td{border:1px solid var(--line);padding:6px 8px;font-size:.78rem;vertical-align:top;text-align:left}
+.self th{background:var(--band);font-size:.66rem;text-transform:uppercase;letter-spacing:.06em}
+.self td.tall{height:26mm}
+
+@page{size:A4 portrait;margin:12mm 14mm}
+@media print{
+  .sheet{padding:0}
+  .page{border:0;border-radius:0;padding:0;margin:0;max-width:none;min-height:0;break-after:page;page-break-after:always}
+  .page:last-child{break-after:auto;page-break-after:auto}
+  .page{background:#fff}
+  .page .pg{display:none}
+  .mast{display:none}
+  .cover{min-height:250mm}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header class="mast noprint">
+  <div>
+    <div class="kicker">Year 9 English · Curious Incident · Speaking folio</div>
+    <h1>Student Booklet</h1>
+    <p class="read">A4 portrait, one table per page so there is room to write. <b>Print double-sided.</b> The Word version in the resources folder is built from the same prompts.</p>
+  </div>
+  <nav class="site" aria-label="Folio pages">
+    <a href="index.html">Prompts</a>
+    <a href="wagoll.html">WAGOLL wall</a>
+    <a href="rubric.html">Rubric</a>
+    <a href="groups.html">Groups</a>
+    <a href="booklet.html" aria-current="page">Print booklet</a>
+  </nav>
+</header>
+<div class="tools noprint"><button class="primary" id="print">Print / save PDF</button><span class="small muted">Chrome or Edge: choose “Save as PDF”, A4, default margins, background graphics on.</span></div>
+
+<div id="book"></div>
+</div>
+
+<script src="prompts.js"></script>
+<script>
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const C = FOLIO.continuum, isExp = lv => lv===C.expected;
+let pages = [], pn = 0;
+const rules = n => Array.from({length:n},()=>'<div class="rule"></div>').join("");
+const page = (cls, html) => pages.push(`<section class="page ${cls}">${html}<span class="pg">${++pn}</span></section>`);
+
+/* cover */
+page("cover", `
+  <div>
+    <div class="kicker">${esc(FOLIO.unit)}</div>
+    <h1>Speaking and Listening Folio</h1>
+    <div class="novel">${esc(FOLIO.novel)}<i>${esc(FOLIO.author)}</i></div>
+    <div class="field"><label>Name</label><span></span></div>
+    <div class="field"><label>Class</label><span></span></div>
+    <div class="field"><label>Teacher</label><span></span></div>
+  </div>
+  <div class="blurb">
+    <p><b>Three sessions. Six tables. One prompt on each.</b> Talk for five minutes, write for two, move on. By the end of a session you have talked about all six prompts with the same group, and by the end of the folio you have talked with three different groups.</p>
+    <ol>${FOLIO.sessions.map(s=>`<li><b>Session ${s.n} · ${esc(s.title)}.</b> ${esc(s.focus)}.</li>`).join("")}</ol>
+    <p>The rubric is on the next page. Your teacher listens at Table 1. Your own notes are the evidence for Listening.</p>
+  </div>`);
+
+/* rubric */
+page("", `
+  <h2 class="ph">Rubric · Speaking and Listening continuum</h2>
+  <table class="cont">
+    <thead><tr><th class="rowlab">Substrand</th>${C.levels.map(lv=>`<th${isExp(lv)?' class="expected"':''}>${lv}${isExp(lv)?'<span class="sub">Year 9</span>':''}</th>`).join("")}</tr></thead>
+    <tbody>${C.strands.map(s=>`<tr><th class="rowlab">${esc(s.name)}</th>${C.levels.map(lv=>s.levels[lv]?`<td${isExp(lv)?' class="expected-col"':''}>${esc(s.levels[lv])}</td>`:`<td class="blank${isExp(lv)?" expected-col":""}"></td>`).join("")}</tr>`).join("")}</tbody>
+  </table>
+  <div class="ev">${C.strands.map(s=>`<div class="card"><h3>${esc(s.name)}</h3>${esc(FOLIO.evidence[s.key])}</div>`).join("")}</div>
+  <h2 class="ph" style="margin-top:16px;font-size:1rem">Teacher observation · Table 1</h2>
+  <table class="signoff"><thead><tr><th style="width:26%">Session</th><th style="width:14%">Date</th><th style="width:12%">Listening</th><th style="width:12%">Interacting</th><th style="width:12%">Presenting</th><th>What I heard</th></tr></thead>
+  <tbody>${FOLIO.sessions.map(s=>`<tr><td>${s.n} · ${esc(s.title)}</td><td></td><td></td><td></td><td></td><td></td></tr>`).join("")}</tbody></table>
+  <p class="small muted" style="margin-top:8px">Levels are the continuum numbers above. Blank cells in the continuum are blank in the source document too.</p>`);
+
+/* how + starters */
+page("", `
+  <h2 class="ph">How a session runs</h2>
+  <div class="steps">${FOLIO.howItWorks.map(s=>`<div>${esc(s)}</div>`).join("")}</div>
+  <h2 class="ph" style="margin-top:16px">Sentence starters</h2>
+  <p class="small muted">The colours are the same on the WAGOLL wall. A good five minutes uses all four; a great one doesn't need the list.</p>
+  <div class="starters">${FOLIO.starters.map(g=>`<div class="card st-${g.key}"><h3>${esc(g.name)}</h3><ul>${g.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}</div>`);
+
+/* sessions */
+FOLIO.sessions.forEach(s=>{
+  page("sess-intro", `
+    <h2 class="ph">Session ${s.n} · ${esc(s.title)}</h2>
+    <p class="focus">${esc(s.focus)}</p>
+    <ol>${s.how.map(h=>`<li>${esc(h)}</li>`).join("")}</ol>
+    ${s.panelQuestions?`<div class="card"><h3>The three panel questions</h3><ol style="margin:0;padding-left:1.2em;font-size:.86rem">${s.panelQuestions.map(q=>`<li>${esc(q)}</li>`).join("")}</ol></div>`:""}
+    <div class="card write"><h3>Write for two minutes at every table</h3><p style="margin:0;font-size:.88rem">${esc(s.write)}</p></div>
+    <table class="stationlist">${s.stations.map(st=>`<tr><td>Table ${st.n}${st.teacher?" ★":""}</td><td>${esc(st.quote.length>90?st.quote.slice(0,88).replace(/\s+\S*$/,"")+" …":st.quote)}${st.source?` <span class="muted">(${esc(st.source)})</span>`:""}</td></tr>`).join("")}</table>
+    <p class="small muted" style="margin-top:8px">★ Teacher table. Your group's starting table and the order you move in are on the board.</p>`);
+  s.stations.forEach(st=>{
+    page("station", `
+      <div class="head"><b>Session ${s.n} · Table ${st.n}</b><span>${st.teacher?"Teacher table · ":""}${esc(s.title)}</span></div>
+      <blockquote>${esc(st.quote)}${st.source?`<span class="src">${esc(st.source)}</span>`:""}</blockquote>
+      <ol class="talk">${st.talk.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>
+      <div class="meta">
+        <div><div class="lab">Date</div>${rules(1)}</div>
+        <div><div class="lab">Who was at my table</div>${rules(1)}</div>
+      </div>
+      <div class="lab">What my table said <i>who said it, in your words</i></div>
+      ${rules(9)}
+      <div class="lab">What I think now <i>${esc(s.key==="disagree"?"which side, and did anyone move":s.key==="panel"?"the one thing we'd tell the class":"what changed or what got confirmed")}</i></div>
+      ${rules(5)}`);
+  });
+});
+
+/* self-assessment */
+page("", `
+  <h2 class="ph">After Session 3 · Where is my evidence?</h2>
+  <p class="small muted">For each substrand, find the continuum line you can prove, and write the page in this booklet where the proof is. Your teacher's Table 1 notes are on page 2.</p>
+  <table class="self"><thead><tr><th style="width:18%">Substrand</th><th style="width:14%">Level I'm claiming</th><th>The line, in my words</th><th style="width:22%">Where the proof is</th></tr></thead>
+  <tbody>${C.strands.map(s=>`<tr><td><b>${esc(s.name)}</b></td><td></td><td class="tall"></td><td></td></tr>`).join("")}</tbody></table>
+  <h2 class="ph" style="margin-top:16px;font-size:1rem">Next time I'm at a table I will</h2>
+  ${rules(5)}`);
+
+document.getElementById("book").innerHTML = pages.join("");
+document.getElementById("print").onclick = ()=>window.print();
+</script>
+</body>
+</html>
