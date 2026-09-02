@@ -18,10 +18,10 @@ const FOLIO = {
 
   /* Learning continuum. Levels 5 to 9 (Listening), 5 to 10 (Interacting) and
      5 to 11 (Presenting) are the school's Speaking and Listening continuum
-     verbatim. Listening 10 to 12 are the draft extension written against the
+     verbatim. Listening 10 and 11 are the draft extension written against the
      VCE English study design so a Year 9 student can be placed above 9. */
   continuum: {
-    levels: [5, 6, 7, 8, 9, 10, 11, 12],
+    levels: [5, 6, 7, 8, 9, 10, 11],
     expected: 9,
     strands: [
       { key: "listening", name: "Listening",
@@ -33,9 +33,8 @@ const FOLIO = {
           9: "I can listen critically to spoken texts constructed for different purposes",
           10: "I can use interaction skills to discuss and analyse the purposes and effects of text structures and language features",
           11: "I can engage productively in discussion, listening to and building on the ideas of others to develop and clarify my own thinking",
-          12: "I can engage in sustained, critical and constructive discussion, developing, defending and refining ideas in response to peers and teachers",
         },
-        extension: [10, 11, 12] },
+        extension: [10, 11] },
       { key: "interacting", name: "Interacting",
         levels: {
           5: "I can present and justify a point of view",

@@ -48,6 +48,7 @@ const brk = () => new Paragraph({ children: [new PageBreak()] });
 const hcell = (t, w, o = {}) => cell(P([{ text: t, bold: true, color: WHITE, size: o.size ?? 11 }], { align: o.align, after: 0 }), w, { fill: PURPLE, valign: VerticalAlign.CENTER });
 
 const C = FOLIO.continuum, isExp = lv => lv === C.expected;
+const LEVELS = C.levels.filter(lv => lv >= 7);   // the booklet shows 7 to 11; the site keeps 5 and 6
 const body = [];
 
 /* ---------- page 1: front page ---------- */
@@ -62,19 +63,21 @@ body.push(table([new TableRow({ children: ["Name", "Class", "Teacher"].map(f =>
   [Math.floor(CONTENT / 3), Math.floor(CONTENT / 3), Math.floor(CONTENT / 3)]));
 body.push(P("", { after: 100 }));
 
-const lvW = Math.floor((CONTENT - 1500) / C.levels.length);
+const lvW = Math.floor((CONTENT - 1500) / LEVELS.length);
 body.push(table([
   new TableRow({ tableHeader: true, children: [
     hcell("Speaking and Listening", 1500, { size: 10 }),
-    ...C.levels.map(lv => cell(P([{ text: String(lv), bold: true, size: 11 }], { align: AlignmentType.CENTER, after: 0 }), lvW, { fill: isExp(lv) ? PURPLE : PEACH, valign: VerticalAlign.CENTER })),
-  ].map((c, i) => i > 0 && isExp(C.levels[i - 1]) ? cell(P([{ text: String(C.levels[i - 1]), bold: true, color: WHITE, size: 11 }], { align: AlignmentType.CENTER, after: 0 }), lvW, { fill: PURPLE, valign: VerticalAlign.CENTER }) : c) }),
+    ...LEVELS.map(lv => isExp(lv)
+      ? cell(P([{ text: String(lv), bold: true, color: WHITE, size: 11 }], { align: AlignmentType.CENTER, after: 0 }), lvW, { fill: PURPLE, valign: VerticalAlign.CENTER })
+      : cell(P([{ text: String(lv), bold: true, size: 11 }], { align: AlignmentType.CENTER, after: 0 }), lvW, { fill: PEACH, valign: VerticalAlign.CENTER })),
+  ] }),
   ...C.strands.map(s => new TableRow({ children: [
     hcell(s.name, 1500, { size: 10 }),
-    ...C.levels.map(lv => cell(P(s.levels[lv] || "", { size: 7.5, after: 0, italics: !!(s.extension && s.extension.includes(lv)) }), lvW,
+    ...LEVELS.map(lv => cell(P(s.levels[lv] || "", { size: 8.5, after: 0, italics: !!(s.extension && s.extension.includes(lv)) }), lvW,
       { fill: s.levels[lv] ? (isExp(lv) ? PEACH : undefined) : "F2F2F2" })),
   ] })),
-], [1500, ...C.levels.map(() => lvW)]));
-body.push(P("Level 9 is the Year 9 expected level. Listening 10 to 12 in italics: draft extension above the school continuum.", { size: 8, color: MUTED, before: 40, after: 140 }));
+], [1500, ...LEVELS.map(() => lvW)]));
+body.push(P("Level 9 is the Year 9 expected level. Listening 10 and 11 in italics: draft extension above the school continuum.", { size: 8, color: MUTED, before: 40, after: 140 }));
 
 body.push(P([{ text: "Table 1 · teacher record", bold: true, underline: true, size: 12 }], { after: 60, keepNext: true }));
 const obsW = [3400, 1700, 3466, 3466, 3366];
