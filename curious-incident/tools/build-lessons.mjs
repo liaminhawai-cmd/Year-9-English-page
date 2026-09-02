@@ -20,7 +20,7 @@ const outDir = process.argv[2] || path.dirname(fileURLToPath(import.meta.url));
 mkdirSync(outDir, { recursive: true });
 
 const SITE = "https://liaminhawai-cmd.github.io/Year-9-English-page/curious-incident/";
-const REPO = "https://github.com/liaminhawai-cmd/year-9-english/blob/claude/curious-incident-folio-k6wypq/English%20LA%20-%20Year%209%20English/";
+const REPO = "https://github.com/liaminhawai-cmd/year-9-english/raw/claude/curious-incident-folio-k6wypq/English%20LA%20-%20Year%209%20English/";
 const file = n => REPO + encodeURIComponent(n);
 const L = {
   prompts: n => [`Prompts page · Session ${n}`, `${SITE}index.html#session-${n}`],

@@ -9,7 +9,7 @@ import path from "node:path";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = process.argv[2] || path.join(here, "..", "..", "..", "year-9-english");
 const BRANCH = "claude/curious-incident-folio-k6wypq";
-const BASE = `https://github.com/liaminhawai-cmd/year-9-english/blob/${BRANCH}/`;
+const BASE = `https://github.com/liaminhawai-cmd/year-9-english/raw/${BRANCH}/`;
 const TREE = `https://github.com/liaminhawai-cmd/year-9-english/tree/${BRANCH}/`;
 const files = execSync("git ls-files -z", { cwd: repo, encoding: "utf8" }).split("\0").filter(Boolean)
   .filter(f => !/desktop\.ini$|^tools\/|\.gitignore$|^README|\/Archive\/|Older files\//.test(f));
