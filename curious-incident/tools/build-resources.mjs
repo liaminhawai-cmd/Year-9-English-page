@@ -20,7 +20,7 @@ const size = f => { try { const b = statSync(path.join(repo, f)).size; return b 
 const li = f => `<li><a href="${url(f)}">${esc(name(f))}</a> <span class="sz">${size(f)}</span></li>`;
 const Y9 = "English LA - Year 9 English/";
 const groups = [
-  ["Curious Incident", "", f => f.startsWith(Y9 + "Curious Incident") || f === Y9 + "curious dog.pdf" || f.startsWith("English/Unit 3 - Novel Study")],
+  ["Speaking and Listening Folio", "", f => /Curious Incident Speaking Folio|Curious Incident - Unit Planner/.test(f)],
 ];
 const used = new Set();
 const sections = groups.map(([h, sub, test]) => {
@@ -75,7 +75,6 @@ section.g li{margin:2px 0}
   <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 1 - Personal Response.docx")}"><b>Lesson 1 · Personal response</b><span>Word</span></a>
   <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 2 - I Couldn't Disagree More.docx")}"><b>Lesson 2 · I couldn't disagree more</b><span>Word</span></a>
   <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 3 - Passage Analysis Panel.docx")}"><b>Lesson 3 · Passage analysis panel</b><span>Word</span></a>
-  <a class="card" href="${url(Y9 + "Curious Incident - Close Analysis Practice - Worksheet.docx")}"><b>Close analysis practice</b><span>Worksheet and lesson plan · the Mrs Alexander passage</span></a>
 </div>
 <div class="cols">${sections}</div>
 <p class="foot">Built from the repository file list by tools/build-resources.mjs. Rebuild after adding files.</p>

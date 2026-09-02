@@ -1,5 +1,5 @@
 /* Table talk content. Two speakers, A and B. One session at a time, six
-   positions: not working, then levels 7, 8, 9, 10, 11.
+   positions: levels 5, 6, 7, 8, 9, 10, 11.
 
    Line shape: [speaker, text, notes]
      text   mark the words that count with {L|…} {I|…} {P|…}
@@ -14,12 +14,25 @@ const SESSIONS = [
     prompt: "I do not tell lies. Mother used to say that this was because I was a good person. But it is not because I am a good person. It is because I can't tell lies.",
     task: "A feeling and a reason each. Then respond to each other.",
     levels: [
-      { level: null, band: "Not working", lines: [
-        ["A", "{P|reads}", { P: [5, "Reading aloud is the only speaking done, and it is done to get it over with."] }],
-        ["B", "Yeah.", {}],
-        ["A", "{I|I agree.}", { I: [5, "Agreement with nothing to agree with. No point of view has been given."] }],
-        ["B", "It's like, deep.", {}],
-        ["A", "What do we write?", {}],
+      { level: 5, band: "Working towards", lines: [
+        ["A", "{P|reads the quote, quietly} {I|I think he's a good person, because he doesn't lie.}",
+          { P: [5, "Read to the table so the talk can start."], I: [5, "A point of view with a reason. Level 5."] }],
+        ["B", "I think it's sad.", {}],
+        ["A", "{L|Why sad?}", { L: [5, "A clarifying question."] }],
+        ["B", "{I|Because he can't help it. It's not a choice for him.}", { I: [5, "Now a reason with the point of view."] }],
+        ["A", "{L|What do you mean, not a choice?}", { L: [5, "Asks B to say what they mean."] }],
+        ["B", "Like his mum thinks he's being good but he just can't lie.", {}],
+        ["A", "{P|reads the last line again} Okay. Write that?", { P: [5, "Reads to the table. Then the talk ends."] }],
+      ] },
+      { level: 6, band: "Working towards", lines: [
+        ["A", "{P|reads the quote to the table, looks up} {I|I think it's honest, because he says it's not about being good.}",
+          { P: [6, "Read clearly to the small group."], I: [5, "A point of view with a reason from the quote."] }],
+        ["B", "{L|So the main idea is he can't lie, not that he's good?}", { L: [6, "B describes the key idea in what A said."] }],
+        ["A", "Yeah. {I|He's correcting his mum.}", { I: [5, "A point of view, short, with the reason already given."] }],
+        ["B", "{I|Then it's a bit sad, because she wanted him to be good.}", { I: [7, "A feeling with a reason from the quote, shared into the discussion. Level 7 in a level 6 talk."] }],
+        ["A", "{L|Sad for her, or for him?}", { L: [5, "A clarifying question."] }],
+        ["B", "For her. He doesn't mind.", {}],
+        ["A", "{I|True, he just says what's accurate.} {P|to the table} Everyone got that?", { I: [5, "Agrees with a reason."], P: [6, "Speaks to the whole table, not only to B."] }],
       ] },
       { level: 7, band: "Working towards", lines: [
         ["A", "{P|reads the quote fast, eyes on the page} {I|I think that's good, he doesn't lie.}",
@@ -124,12 +137,26 @@ const SESSIONS = [
     prompt: "Ed Boone is a good father.",
     task: "Take a side with a reason from the book. Quote the other person back before you answer them.",
     levels: [
-      { level: null, band: "Not working", lines: [
-        ["A", "{P|reads the statement}", { P: [5, "Read, and then nobody takes a side."] }],
-        ["B", "Nah.", {}],
-        ["A", "Yeah he's bad.", {}],
-        ["B", "{P|shrugs}", { P: [5, "A shrug is the whole contribution."] }],
-        ["A", "So, disagree?", {}],
+      { level: 5, band: "Working towards", lines: [
+        ["A", "{P|reads the statement}", { P: [5, "Read to the table."] }],
+        ["B", "{I|Disagree. He killed Wellington.}", { I: [5, "A side and a reason."] }],
+        ["A", "{I|Agree. He cooks for him and stuff.}", { I: [5, "A side and a reason, vague."] }],
+        ["B", "{L|Cooks for who?}", { L: [5, "A clarifying question."] }],
+        ["A", "Christopher. He makes his dinner every night.", {}],
+        ["B", "{I|Still killed a dog though.}", { I: [5, "Repeats the side and the reason."] }],
+        ["A", "Yeah.", {}],
+        ["B", "So we disagree.", {}],
+      ] },
+      { level: 6, band: "Working towards", lines: [
+        ["A", "{P|reads the statement clearly, to both} Who's first?", { P: [6, "Read clearly to the small group, then hands out the first turn."] }],
+        ["B", "{I|Disagree, because he killed Wellington and lied about Mother.}", { I: [5, "A side with two reasons."] }],
+        ["A", "{L|So your main reason is the lying?}", { L: [6, "A picks out the key idea in what B said."] }],
+        ["B", "Both. The dog and the lying.", {}],
+        ["A", "{I|Agree, because he looks after Christopher every day. The food, the school, the police station.}", { I: [5, "A side with reasons from the book."] }],
+        ["B", "{L|Wait, the police station?}", { L: [5, "A clarifying question."] }],
+        ["A", "He comes and gets him out, in the first chapters.", {}],
+        ["B", "{I|Okay, he does look after him. I still say the lie is too big.}", { I: [6, "B changes what they say to A after hearing the reason, and keeps the side. Level 6."] }],
+        ["A", "{P|to the table} So one each way.", { P: [6, "Speaks to the whole table."] }],
       ] },
       { level: 7, band: "Working towards", lines: [
         ["A", "{P|reads the statement} {I|No way. He killed the dog.}",
@@ -233,12 +260,25 @@ const SESSIONS = [
     prompt: "The opening: 'It was 7 minutes after midnight.' Christopher finds Wellington.",
     task: "What happens, how it is written, what it shows. Say 'yes, and'. Finish with the one thing you would tell the class.",
     levels: [
-      { level: null, band: "Not working", lines: [
-        ["A", "{P|reads the first page}", { P: [5, "The reading is done, and then nobody claims the first turn."] }],
-        ["B", "So the dog's dead.", {}],
-        ["A", "Yeah.", {}],
-        ["B", "What do we write for the writing bit?", {}],
-        ["A", "Dunno. Short sentences?", {}],
+      { level: 5, band: "Working towards", lines: [
+        ["A", "{P|reads the first page}", { P: [5, "Read to the table."] }],
+        ["B", "{I|The dog's dead. It's got a fork in it.}", { I: [5, "Says what happens, from the page."] }],
+        ["A", "{L|What's the time thing at the start?}", { L: [5, "A clarifying question."] }],
+        ["B", "7 minutes after midnight.", {}],
+        ["A", "{I|That's how it's written. Really exact.}", { I: [5, "An opinion about the writing."] }],
+        ["B", "{I|And short sentences.}", { I: [5, "A second feature, named."] }],
+        ["A", "What does it show?", {}],
+        ["B", "{I|That he notices everything?}", { I: [5, "A guess at what it shows. Nobody takes it further."] }],
+      ] },
+      { level: 6, band: "Working towards", lines: [
+        ["A", "{P|reads the first page, slowly enough to hear the sentences}", { P: [6, "Read clearly to the small group."] }],
+        ["B", "{I|What happens: Christopher finds Wellington dead in the garden with a fork in him.}", { I: [5, "Answers the first question from the page."] }],
+        ["A", "{L|And the main thing about how it's written is the time, 7 minutes after midnight?}", { L: [6, "A describes the key idea and checks it."] }],
+        ["B", "Yeah. {I|Exact time, exact details. The fork, the grass.}", { I: [5, "Points at the words."] }],
+        ["A", "{I|And the sentences are short. 'It was 7 minutes after midnight.' Full stop.}", { I: [5, "A feature with the words it lives in."] }],
+        ["B", "{L|What does exact show, do you think?}", { L: [5, "A clarifying question that asks for the idea."] }],
+        ["A", "{I|That he notices everything and doesn't say how he feels.}", { I: [7, "Feature to meaning. Level 7 in a level 6 talk."] }],
+        ["B", "{P|to the table} So we say: exact details, no feelings. Everyone okay with that?", { P: [6, "Presents the table's one thing to the group."] }],
       ] },
       { level: 7, band: "Working towards", lines: [
         ["A", "{P|reads the first page, quickly} So he finds the dog and it's dead.",

@@ -5,12 +5,11 @@
    node tools/build-folio.mjs [output.docx]
    Needs the `docx` package (NODE_PATH to a folder that has it).
 
-   Four pages, nothing explained on any of them (the teacher explains it):
-     1  front page: name, continuum rubric, Table 1 teacher record
-     2  Session 1: five rows, one per table (Tables 2 to 6)
-     3  Session 2: same
-     4  Session 3: same
-   Table 1 is the teacher table and is scored on the front page, so it has no row. */
+   Seven pages, nothing explained on any of them (the teacher explains it):
+     1    front page: name, continuum rubric (7 to 11), Table 1 teacher record
+     2-3  Session 1 as a spread: Tables 2 to 4, then Table 1 (greyed: the
+          booklet is with the teacher) with Tables 5 and 6
+     4-5  Session 2, 6-7  Session 3: same. */
 
 import { createRequire } from "node:module";
 import { writeFileSync, readFileSync } from "node:fs";
@@ -88,24 +87,34 @@ body.push(table([
 ], obsW));
 body.push(brk());
 
-/* ---------- pages 2 to 4: one per session, five rows ---------- */
+/* ---------- two pages per session: Tables 2 to 4, then Table 1 (teacher, greyed) with Tables 5 and 6 ---------- */
 const W = [4200, 2300, 5100, CONTENT - 11600];
+const ROWH = 2750;
 const shortQuote = q => q.length > 150 ? q.slice(0, 148).replace(/\s+\S*$/, "") + " …" : q;
+const sessHead = (s, cont) => [table([new TableRow({ children: [
+  hcell(`Session ${s.n} · ${s.title}${cont ? " (continued)" : ""}`, CONTENT - 2600, { size: 13 }),
+  cell(P([{ text: "Date:  ", bold: true, color: WHITE }], { after: 0, align: AlignmentType.RIGHT }), 2600, { fill: PURPLE, valign: VerticalAlign.CENTER }),
+] })], [CONTENT - 2600, 2600]), P("", { after: 60 })];
+const colHead = () => new TableRow({ tableHeader: true, children: ["Table and prompt", "Who was at my table", "What my table said", "What I think now"].map((t, k) =>
+  cell(P([{ text: t, bold: true, size: 10 }], { after: 0 }), W[k], { fill: PEACH, valign: VerticalAlign.CENTER })) });
+const stationRow = st => new TableRow({ height: { value: ROWH, rule: HeightRule.ATLEAST }, cantSplit: true, children: [
+  cell([P([{ text: `Table ${st.n}`, bold: true, color: PURPLE, size: 10 }], { after: 20 }),
+        P(shortQuote(st.quote), { size: 9.5, font: "Georgia", after: 20 }),
+        ...(st.source ? [P(st.source, { size: 8, color: MUTED, after: 0 })] : [])], W[0]),
+  cell(P("", { after: 0 }), W[1]), cell(P("", { after: 0 }), W[2]), cell(P("", { after: 0 }), W[3]),
+] });
+const teacherRow = () => new TableRow({ height: { value: ROWH, rule: HeightRule.ATLEAST }, cantSplit: true, children: [
+  new TableCell({ columnSpan: 4, width: { size: CONTENT, type: WidthType.DXA }, borders: box, shading: shade("F2F2F2"), verticalAlign: VerticalAlign.CENTER, margins: { top: 50, bottom: 50, left: 90, right: 90 },
+    children: [P([{ text: "Table 1 · Teacher table", bold: true, color: MUTED, size: 11 }], { align: AlignmentType.CENTER, after: 40 }),
+               P([{ text: "Give your booklet to the teacher.", color: MUTED, size: 10 }], { align: AlignmentType.CENTER, after: 0 })] }),
+] });
 FOLIO.sessions.forEach((s, i) => {
-  body.push(table([new TableRow({ children: [
-    hcell(`Session ${s.n} · ${s.title}`, CONTENT - 2600, { size: 13 }),
-    cell(P([{ text: "Date:  ", bold: true, color: WHITE }], { after: 0, align: AlignmentType.RIGHT }), 2600, { fill: PURPLE, valign: VerticalAlign.CENTER }),
-  ] })], [CONTENT - 2600, 2600]));
-  body.push(P("", { after: 60 }));
-  const head = new TableRow({ tableHeader: true, children: ["Table and prompt", "Who was at my table", "What my table said", "What I think now"].map((t, k) =>
-    cell(P([{ text: t, bold: true, size: 10 }], { after: 0 }), W[k], { fill: PEACH, valign: VerticalAlign.CENTER })) });
-  const rows = s.stations.filter(st => !st.teacher).map(st => new TableRow({ height: { value: 1660, rule: HeightRule.ATLEAST }, cantSplit: true, children: [
-    cell([P([{ text: `Table ${st.n}`, bold: true, color: PURPLE, size: 10 }], { after: 20 }),
-          P(shortQuote(st.quote), { size: 9.5, font: "Georgia", after: 20 }),
-          ...(st.source ? [P(st.source, { size: 8, color: MUTED, after: 0 })] : [])], W[0]),
-    cell(P("", { after: 0 }), W[1]), cell(P("", { after: 0 }), W[2]), cell(P("", { after: 0 }), W[3]),
-  ] }));
-  body.push(table([head, ...rows], W));
+  const st = s.stations.filter(x => !x.teacher);
+  body.push(...sessHead(s, false));
+  body.push(table([colHead(), ...st.slice(0, 3).map(stationRow)], W));
+  body.push(brk());
+  body.push(...sessHead(s, true));
+  body.push(table([colHead(), teacherRow(), ...st.slice(3).map(stationRow)], W));
   if (i < FOLIO.sessions.length - 1) body.push(brk());
 });
 

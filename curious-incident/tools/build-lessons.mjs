@@ -77,8 +77,8 @@ const lessons = [
   {
     file: "Curious Incident Speaking Folio - Lesson 1 - Personal Response.docx",
     title: "Speaking Folio 1 - Personal response",
-    li: ["To respond to a quote with a reason from the words", "To link my idea to what someone else at the table said"],
-    sc: ["I can give a feeling and a because from the quote (Interacting 7)", "I can agree, add or disagree with a named person (Interacting 7)", "I can ask a question that gets a reason out of someone (Listening 5, 8)"],
+    li: ["To share my interpretations, ideas and opinions in a group discussion", "To use active listening skills"],
+    sc: ["I can present and justify a point of view", "I can ask clarifying questions", "I can describe the key ideas in what someone else said", "I can share my interpretations, ideas and opinions in a group discussion"],
     engage: [P([{ b: "Silent starter:", color: ROW.engage.ink }, " Session 1 passage on the screen (", { link: L.prompts(1) }, "). Write one feeling and one because in the margin of your folio."]),
              B("Three students share.")],
     develop: [H("Task 1 · Table talk"),
@@ -96,8 +96,8 @@ const lessons = [
   {
     file: "Curious Incident Speaking Folio - Lesson 2 - I Couldn't Disagree More.docx",
     title: "Speaking Folio 2 - I couldn't disagree more",
-    li: ["To take a side and give a reason from the book", "To quote the other person back, reframe and concede"],
-    sc: ["I can say my side and a reason from the book in one sentence (Interacting 5)", "I can repeat the other person's words before I answer (Listening 9)", "I can give ground on the part that is true and keep the rest (Interacting 9)", "As Reader I can read the statement and run the talk without taking a side (Presenting 6)"],
+    li: ["To interpret implied meaning in spoken texts", "To use my voice and register appropriately in different contexts"],
+    sc: ["I can present and justify a point of view", "I can change the way I speak depending on the social relationship", "I can interpret implied meaning in what someone else said", "I can present information clearly to a small group"],
     engage: [P([{ b: "Silent starter:", color: ROW.engage.ink }, " on the board: ", { i: "Homework should be banned." }, " Write one reason for and one against."]),
              B("Thirty seconds each side, whole class.")],
     develop: [H("Task 1 · Table talk"),
@@ -116,8 +116,8 @@ const lessons = [
   {
     file: "Curious Incident Speaking Folio - Lesson 3 - Passage Analysis Panel.docx",
     title: "Speaking Folio 3 - Passage analysis panel",
-    li: ["To locate a writing feature in the words on the page", "To build on another person's point and present one clear sentence"],
-    sc: ["I can name a feature and quote the words it lives in (Interacting 7)", "I can say 'yes, and' and take someone's point further (Listening 11)", "I can hand a turn to someone by name (Interacting 10)", "I can say our one thing to the class in one clear sentence (Presenting 8)"],
+    li: ["To listen critically to spoken texts constructed for different purposes", "To change the use of my voice when presenting, discussing or persuading"],
+    sc: ["I can use active listening skills", "I can share my interpretations, ideas and opinions in a group discussion", "I can use inclusive and encouraging language to facilitate positive conversations", "I can present information clearly to a class group"],
     engage: [P([{ b: "Silent starter:", color: ROW.engage.ink }, " first page of the novel on the screen. Write one answer to each: what happens, how is it written, what does it show."]),
              B("Three students share, one question each.")],
     develop: [H("Task 1 · Table talk"),
