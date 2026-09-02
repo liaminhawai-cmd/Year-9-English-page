@@ -34,12 +34,18 @@ html{font-size:clamp(15px, .5vw + 9px, 24px)}
 .station .talk{font-size:.82rem;margin:0;padding-left:1.1em} .station .talk li{margin:3px 0}
 .spare{margin-top:10px;font-size:.8rem;color:var(--muted)} .spare li{margin:2px 0}
 
-@page{size:A4 portrait;margin:12mm}
+.station.t1hidden .body{display:none}
+@page{size:A3 portrait;margin:18mm}
 @media print{
-  .sess-tabs,.tools,.spare,.sess-head{display:none!important}
+  .sess-tabs,.tools,.spare,.sess-head,.mast nav,.starters,h2.noprint,.foot{display:none!important}
   .stations{display:block}
-  .station{break-inside:avoid;min-height:120mm;margin-bottom:8mm;border:1.5px solid #22304a;border-radius:0;padding:10mm}
-  .station blockquote{font-size:15pt} .station .talk{font-size:12pt} .station .num{font-size:11pt}
+  .station{break-after:page;break-inside:avoid;min-height:240mm;margin:0;border:2px solid #22304a;border-radius:0;padding:16mm;box-shadow:none}
+  .station:last-child{break-after:auto}
+  .station.t1hidden .body{display:block}
+  .station .num{font-size:20pt;margin-bottom:10mm}
+  .station blockquote{font-size:30pt;line-height:1.35;margin:0 0 12mm}
+  .station blockquote .src{font-size:16pt}
+  .station .talk{font-size:22pt;line-height:1.4}
 }
 .starters{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 @media (max-width:1000px){.starters{grid-template-columns:repeat(3,1fr)}}
@@ -98,7 +104,8 @@ html{font-size:clamp(15px, .5vw + 9px, 24px)}
 
 <div class="tools" style="margin-top:4px">
   <button class="primary" id="openDisplay">▶ Display mode with timer</button>
-  <button id="printCards">Print prompt cards</button>
+  <button id="printCards">Print A3 prompt set</button>
+  <button id="showT1" aria-pressed="false">Show Table 1 prompt</button>
 </div>
 
 <div class="sess-tabs" id="tabs" role="tablist"></div>
@@ -150,11 +157,14 @@ tabs.querySelectorAll("button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i; hist
 const fromHash=()=>{ const m=(location.hash||"").match(/session-(\d)/); if(m){ const i=Math.min(FOLIO.sessions.length,Math.max(1,+m[1]))-1; if(i!==cur){ cur=i; renderSession(); } } };
 window.addEventListener("hashchange",fromHash);
 
+/* the Table 1 prompt is the teacher's: off the screen unless the teacher turns it on. Print always has it. */
+let showT1 = false; try{ showT1 = localStorage.getItem("ci_t1")==="1"; }catch(e){}
 function stationCard(st){
-  return `<div class="station${st.teacher?" teacher":""}">
+  const hide = st.teacher && !showT1;
+  return `<div class="station${st.teacher?" teacher":""}${hide?" t1hidden":""}">
     <div class="num">Table ${st.n} ${st.teacher?'<span class="tag tag-teacher">Teacher table</span>':""}</div>
-    <blockquote>${esc(st.quote)}${st.source?`<span class="src">${esc(st.source)}</span>`:""}</blockquote>
-    <ol class="talk">${st.talk.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>
+    <div class="body"><blockquote>${esc(st.quote)}${st.source?`<span class="src">${esc(st.source)}</span>`:""}</blockquote>
+    <ol class="talk">${st.talk.map(t=>`<li>${esc(t)}</li>`).join("")}</ol></div>
   </div>`;
 }
 
@@ -200,8 +210,8 @@ function renderDisplay(){
   $("#dGrid").innerHTML = s.stations.map(st=>`<div class="dst${st.teacher?" teacher":""}">
       <div class="num">Table ${st.n} ${st.teacher?'<span class="tag tag-teacher">Teacher table</span>':""}</div>
       ${whoAt(st.n)}
-      <blockquote>${esc(st.quote)}${st.source?`<span class="src">${esc(st.source)}</span>`:""}</blockquote>
-      <ol class="talk">${st.talk.map(t=>`<li>${esc(t)}</li>`).join("")}</ol></div>`).join("");
+      ${st.teacher && !showT1 ? "" : `<blockquote>${esc(st.quote)}${st.source?`<span class="src">${esc(st.source)}</span>`:""}</blockquote>
+      <ol class="talk">${st.talk.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>`}</div>`).join("");
   drawClock();
 }
 const mins = () => D.phase==="talk" ? +$("#dTalk").value||5 : +$("#dWrite").value||2;
@@ -245,6 +255,10 @@ $("#dNext").onclick = ()=>{ pause(); if(D.rot<FOLIO.tables) D.rot++; D.phase="ta
 $("#dPrev").onclick = ()=>{ pause(); if(D.rot>1) D.rot--; D.phase="talk"; resetPhase(); renderDisplay(); };
 $("#dTalk").onchange = $("#dWrite").onchange = ()=>{ if(!D.running) resetPhase(); };
 $("#printCards").onclick = ()=>window.print();
+const t1btn = $("#showT1");
+const paintT1 = ()=>{ t1btn.setAttribute("aria-pressed", showT1); t1btn.textContent = showT1 ? "Hide Table 1 prompt" : "Show Table 1 prompt"; };
+t1btn.onclick = ()=>{ showT1 = !showT1; try{ localStorage.setItem("ci_t1", showT1?"1":"0"); }catch(e){} paintT1(); renderSession(); if(disp.classList.contains("on")) renderDisplay(); };
+paintT1();
 $("#dSound").onclick = e=>{ D.sound=!D.sound; e.currentTarget.setAttribute("aria-pressed",String(D.sound)); };
 document.addEventListener("keydown", e=>{ if(!disp.classList.contains("on")) return; if(e.key==="Escape") $("#dClose").click(); if(e.key===" "){ e.preventDefault(); D.running?pause():start(); } });
 </script>

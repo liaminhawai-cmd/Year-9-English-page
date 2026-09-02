@@ -96,6 +96,8 @@ kbd{font:inherit;font-size:.8em;border:1px solid var(--line);border-bottom-width
     <li>Level 9 is Year 9 expected. Listening 10 and 11 are the extension.</li>
     <li>Presenting: Session 2 (the Reader) and Session 3 (the sentence to the class).</li>
   </ul>
+  <div class="card gold" style="margin-top:10px"><span class="k">The Table 1 prompts</span><div id="t1prompts"></div>
+    <p class="hint" style="margin:6px 0 0;font-size:.78rem;color:var(--muted)">Hidden on the Prompts page unless you turn it on there. The A3 print set includes it.</p></div>
   <div class="card listen" style="margin-top:10px"><span class="k">Listen for</span>
     <p><b>1:</b> a feeling with a because; a question that gets a reason; a named person answered.</p>
     <p><b>2:</b> a side with a reason from the book; the opponent quoted back; a reframe; a concession; the Reader staying neutral.</p>
@@ -129,5 +131,10 @@ kbd{font:inherit;font-size:.8em;border:1px solid var(--line);border-bottom-width
 </section>
 
 </div>
+<script src="prompts.js"></script>
+<script>
+document.getElementById("t1prompts").innerHTML = FOLIO.sessions.map(s=>{ const st=s.stations.find(x=>x.teacher);
+  return `<p><b>Session ${s.n}:</b> ${st.quote.replace(/</g,"&lt;")}${st.source?` <span class="k" style="letter-spacing:0;text-transform:none">(${st.source.replace(/</g,"&lt;")})</span>`:""}<br><span style="font-size:.84rem">${st.talk.map(q=>q.replace(/</g,"&lt;")).join(" · ")}</span></p>`; }).join("");
+</script>
 </body>
 </html>
