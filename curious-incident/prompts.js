@@ -1,10 +1,11 @@
-/* Curious Incident speaking folio — the one source of truth for prompts,
-   sentence starters and the learning continuum. index.html, booklet.html,
-   rubric.html, groups.html and tools/build-folio.mjs all read this file.
+/* Curious Incident speaking folio: the one source of truth for prompts,
+   sentence starters and the learning continuum. index.html, rubric.html,
+   groups.html, wagoll.html and tools/build-folio.mjs all read this file.
 
-   DRAFT prompts. Quotes are kept short; check wording and add page numbers
-   from the class edition before printing. Chapter numbers follow the novel's
-   prime-numbered chapters. */
+   Draft prompts. Check quote wording and add page numbers from the class
+   edition before printing. Chapter numbers follow the novel's prime-numbered
+   chapters. Anything that explains the task to the student is NOT here:
+   the teacher explains the resource, and the lesson plan holds that. */
 
 const FOLIO = {
   novel: "The Curious Incident of the Dog in the Night-Time",
@@ -15,19 +16,12 @@ const FOLIO = {
   talkMinutes: 5,
   writeMinutes: 2,
 
-  /* How a session runs — printed in the booklet and shown on the display page */
-  howItWorks: [
-    "You sit in a group of about four or five. Each group starts at a different table.",
-    "Every table has one prompt. Talk about it for 5 minutes. Everyone speaks, everyone responds to someone else.",
-    "When the timer goes, stop talking and write for 2 minutes: who said what, and what you think now.",
-    "Then the whole group moves to the next table. Six rotations gets you through all six prompts.",
-    "Table 1 is the teacher table. When your group is there, your teacher listens and records what you do against the continuum on the front page.",
-  ],
-
-  /* Learning continuum, straight from the school's Speaking and Listening
-     continuum (levels 5 to 11). 9 is highlighted as the Year 9 expected level. */
+  /* Learning continuum. Levels 5 to 9 (Listening), 5 to 10 (Interacting) and
+     5 to 11 (Presenting) are the school's Speaking and Listening continuum
+     verbatim. Listening 10 to 12 are the draft extension written against the
+     VCE English study design so a Year 9 student can be placed above 9. */
   continuum: {
-    levels: [5, 6, 7, 8, 9, 10, 11],
+    levels: [5, 6, 7, 8, 9, 10, 11, 12],
     expected: 9,
     strands: [
       { key: "listening", name: "Listening",
@@ -37,7 +31,11 @@ const FOLIO = {
           7: "I can use active listening skills",
           8: "I can interpret implied meaning in spoken texts",
           9: "I can listen critically to spoken texts constructed for different purposes",
-        } },
+          10: "I can use interaction skills to discuss and analyse the purposes and effects of text structures and language features",
+          11: "I can engage productively in discussion, listening to and building on the ideas of others to develop and clarify my own thinking",
+          12: "I can engage in sustained, critical and constructive discussion, developing, defending and refining ideas in response to peers and teachers",
+        },
+        extension: [10, 11, 12] },
       { key: "interacting", name: "Interacting",
         levels: {
           5: "I can present and justify a point of view",
@@ -60,40 +58,47 @@ const FOLIO = {
     ],
   },
 
-  /* Which strands each session gives evidence for */
+  /* Sentence starters, grouped by the discussion move they make.
+     Keys match the colours on the WAGOLL page. */
+  starters: [
+    { key: "respond", name: "Feeling and reason",
+      items: ["When I read this I felt … because …", "What struck me was …", "My first reaction is …"] },
+    { key: "respond", name: "Agree, disagree",
+      items: ["I agree with …, and I'd add …", "I see it differently, because …", "I couldn't disagree more. …", "I partly agree. The bit I'm not sure about is …"] },
+    { key: "listen", name: "Check and infer",
+      items: ["Do you mean …?", "So you're saying …", "Are you implying …?", "What in the text makes you think that?"] },
+    { key: "text", name: "Point at the words",
+      items: ["The word … makes me think …", "Look at the line where …", "Haddon puts … right next to …"] },
+    { key: "invite", name: "Bring people in",
+      items: ["What do you think, …?", "We haven't heard from …", "Going back to what … said …", "Does anyone see it differently?"] },
+  ],
+
+  /* Teacher-facing: where the evidence for each strand comes from. */
   evidence: {
-    listening: "Your written notes after each rotation: what your table said, in your words.",
-    interacting: "What the teacher hears at Table 1, and what your table writes about you.",
-    presenting: "Session 2 (reading the statement aloud) and Session 3 (the panel share-back).",
+    listening: "The session pages: what the table said, in the student's words.",
+    interacting: "Table 1: what the teacher hears from each group, once per session.",
+    presenting: "Session 2 (reading the statement and running the talk) and Session 3 (the share-back).",
   },
 
-  /* Sentence starters. Colour keys match the WAGOLL wall:
-     listen · respond · text · invite */
-  starters: [
-    { key: "respond", name: "Say how it hit you",
-      items: ["When I read this I felt … because …", "What struck me was …", "It made me uncomfortable / curious / sad when …", "My first reaction is …"] },
-    { key: "respond", name: "Respond to an opinion",
-      items: ["I agree with what … said, and I'd add …", "I see it differently, because …", "I couldn't disagree more. …", "I partly agree. The bit I'm not sure about is …"] },
-    { key: "listen", name: "Check you heard it right",
-      items: ["Do you mean …?", "Can you say more about …?", "So you're saying …", "What in the text makes you think that?"] },
-    { key: "text", name: "Point at the words",
-      items: ["The word … makes me think …", "Look at the line where …", "Haddon puts … right next to …", "It's the repetition of … that …"] },
-    { key: "invite", name: "Bring people in",
-      items: ["What do you think, …?", "We haven't heard from …", "Let's go back to what … said.", "Does anyone see it differently?"] },
+  /* Teacher-facing. Read by the lesson plan builder, not shown on student pages. */
+  run: [
+    "Groups of four or five. Each group starts at a different table.",
+    "One prompt per table. Five minutes of talk, then two minutes writing on the session page.",
+    "Groups move up one table each rotation. Six rotations covers all six prompts.",
+    "Table 1 is the teacher table: the teacher listens and records against the continuum on the front page of the folio.",
   ],
 
   sessions: [
     {
       n: 1, key: "respond",
       title: "Personal response",
-      focus: "Responding to opinions and expressing feelings",
-      preTeach: "Before the first rotation, model it with the 'faces' passage early in the novel, where Siobhan draws expressions for Christopher and he keeps the paper in his pocket. Show how to say what you felt, then respond to what someone else felt.",
+      skill: "Connecting ideas: feeling with a reason, linking to your own experience, linking to what someone else just said",
       how: [
         "One person reads the quote aloud.",
-        "Go round once: everyone says how the quote made them feel and why.",
-        "Then respond to each other. Agree, disagree, add, ask.",
+        "Go round once: everyone says how the quote hit them and why.",
+        "Then respond to each other: agree, disagree, add, ask.",
       ],
-      write: "Who was at your table, what two people felt, and one thing someone said that changed or confirmed what you think.",
+      write: "Who was at the table, what two people felt, and one thing someone said that changed or confirmed what you think.",
       stations: [
         { n: 1, teacher: true,
           quote: "I pulled the fork out of the dog and lifted him into my arms and hugged him. He was leaking blood from the fork holes. I like dogs. You always know what a dog is thinking. It has four moods. Happy, sad, cross and concentrating. Also, dogs are faithful and they do not tell lies because they cannot talk.",
@@ -142,12 +147,11 @@ const FOLIO = {
     {
       n: 2, key: "disagree",
       title: "I couldn't disagree more",
-      focus: "Presenting and justifying a point of view, and answering someone who sees it differently",
-      preTeach: "Model taking a position you don't fully hold and defending it with a reason from the text. Then model the polite counter: 'I couldn't disagree more, because …'. The point is the reason, not the volume.",
+      skill: "Agreeing and disagreeing: quoting your opponent back, reframing the question, conceding a point, countering with the text",
       how: [
-        "One person reads the statement aloud. That person is the Reader: they don't give their view first, they run the talk.",
-        "Reader asks: 'Who agrees? Who couldn't disagree more?' Everyone takes a side and gives one reason from the book.",
-        "Reader keeps it going: 'Does anyone want to answer that?' Change sides if someone convinces you, and say so.",
+        "One person reads the statement aloud. That person is the Reader: they run the talk and hold their own view back.",
+        "Reader asks who agrees and who couldn't disagree more. Everyone takes a side and gives one reason from the book.",
+        "Reader keeps it going. Change sides if someone convinces you, and say so.",
         "A different person is Reader at each table.",
       ],
       write: "The statement, which side you took, the best reason you heard from someone else, and whether anyone changed their mind.",
@@ -193,15 +197,14 @@ const FOLIO = {
     {
       n: 3, key: "panel",
       title: "Passage analysis panel",
-      focus: "Reading closely as a group, and speaking about how the writing works",
-      preTeach: "Model a passage panel on the projector: what happens, how Haddon writes it (sentence length, lists, numbers, 'And', dialogue, what is left out), and what it shows about Christopher or a bigger idea. Say the three questions out loud each time so the pattern sticks.",
+      skill: "Building together: 'yes, and', linking ideas, elaborating on someone else's point, taking and handing over turns",
       how: [
         "Someone reads the passage aloud. Everyone follows in the book.",
-        "Work through the three panel questions together: What happens? How is it written? What does it show?",
-        "Everyone must point at a word or a line at least once. 'The bit where …' counts. 'It's just good' doesn't.",
-        "Last minute: agree on the one thing about the writing your table would tell the class.",
+        "Work through the three panel questions together: what happens, how it is written, what it shows.",
+        "Everyone points at a word or a line at least once.",
+        "Last minute: agree on the one thing about the writing the table would tell the class.",
       ],
-      write: "The passage, the writing feature your table noticed, the words it lives in, and what it shows. Then the one thing you'd tell the class.",
+      write: "The passage, the writing feature the table noticed, the words it lives in, and what it shows. Then the one thing you'd tell the class.",
       panelQuestions: [
         "What happens in the passage? Who is there, what is said, what does Christopher do?",
         "How is it written? Sentence length, lists, numbers, repetition, dialogue, what is missing.",

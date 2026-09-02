@@ -27,6 +27,10 @@ published here as-is.
 
 - **No fluff.** No points, streaks, badges, confetti or encouragement banners.
   If a line does not teach, instruct or report a real state, delete it.
+- **The resource never explains itself. The teacher explains the resource.**
+  No "how it works" text, no purpose statements, no instructions to the
+  student on a page or in a booklet. That belongs in the lesson plan, which
+  lives in the private resources repo.
 - **Teach the rule with the example.** Every model is annotated with the move
   it demonstrates: point at the words, name the pattern, match it to the
   continuum line.
@@ -44,8 +48,12 @@ published here as-is.
   Incident of the Dog in the Night-Time*.
   - `prompts.js` is the one source of truth for prompts, starters and the
     continuum. Edit it and every page and the Word booklet follow.
-  - `wagoll-content.js` holds the annotated table talk for the WAGOLL wall.
-  - `tools/build-folio.mjs` builds the Word booklet
-    (`node curious-incident/tools/build-folio.mjs out.docx`, needs `npm i docx`).
+  - `wagoll-content.js` holds the annotated table talk (three sessions, three
+    levels each) for the interactive `wagoll.html`.
+  - `tools/build-folio.mjs` builds the Word booklet and
+    `tools/build-lessons.mjs` the lesson plans. Both write into the private
+    `year-9-english` repo (`node curious-incident/tools/build-folio.mjs out.docx`,
+    needs `npm i docx`). The booklet is Word only, no PDF, and carries no
+    explanation: the lesson plan does.
 - One self-contained page per tool, plain HTML and vanilla JS, no build step,
   no CDNs, no external fonts. Must work offline and on a phone.

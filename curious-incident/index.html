@@ -16,7 +16,7 @@
 
 .sess-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 10px}
 .sess-tabs button{font-size:.86rem}
-.sess-head{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-bottom:12px}
+.sess-head{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:12px}
 @media (max-width:760px){.sess-head{grid-template-columns:1fr}}
 .sess-head .card h3{color:var(--deep)}
 .sess-head ol{margin:0;padding-left:1.2em;font-size:.86rem} .sess-head ol li{margin:3px 0}
@@ -32,6 +32,13 @@
 .station .talk{font-size:.82rem;margin:0;padding-left:1.1em} .station .talk li{margin:3px 0}
 .spare{margin-top:10px;font-size:.8rem;color:var(--muted)} .spare li{margin:2px 0}
 
+@page{size:A4 portrait;margin:12mm}
+@media print{
+  .sess-tabs,.tools,.spare,.sess-head{display:none!important}
+  .stations{display:block}
+  .station{break-inside:avoid;min-height:120mm;margin-bottom:8mm;border:1.5px solid #22304a;border-radius:0;padding:10mm}
+  .station blockquote{font-size:15pt} .station .talk{font-size:12pt} .station .num{font-size:11pt}
+}
 .starters{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 @media (max-width:1000px){.starters{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:600px){.starters{grid-template-columns:1fr}}
@@ -75,33 +82,27 @@
   <div>
     <div class="kicker">Year 9 English · The Curious Incident of the Dog in the Night-Time</div>
     <h1>Speaking and Listening Folio</h1>
-    <p class="read">Three sessions, six tables, one prompt each. <b>Talk for five, write for two, move.</b> Table 1 is the teacher's table.</p>
   </div>
   <nav class="site" aria-label="Folio pages">
     <a href="index.html" aria-current="page">Prompts</a>
-    <a href="wagoll.html">WAGOLL wall</a>
+    <a href="wagoll.html">Table talk</a>
     <a href="rubric.html">Rubric</a>
     <a href="groups.html">Groups</a>
-    <a href="booklet.html">Print booklet</a>
   </nav>
 </header>
 
-<h2>How a session runs</h2>
-<div class="steps" id="steps"></div>
-
-<div class="tools" style="margin-top:14px">
+<div class="tools" style="margin-top:4px">
   <button class="primary" id="openDisplay">▶ Display mode with timer</button>
-  <span class="small muted">Full screen for the projector: the six prompts for the chosen session, the rotation counter, and the talk / write timer.</span>
+  <button id="printCards">Print prompt cards</button>
 </div>
 
 <div class="sess-tabs" id="tabs" role="tablist"></div>
 <section id="session"></section>
 
-<h2>Sentence starters</h2>
-<p class="small muted">Colours match the WAGOLL wall. Use them until you don't need them.</p>
-<div class="starters" id="starters"></div>
+<h2 class="noprint">Sentence starters</h2>
+<div class="starters noprint" id="starters"></div>
 
-<p class="foot">Draft prompts. Quotes are kept short; check wording and add page numbers from the class edition before printing. Groups saved on the <a href="groups.html">Groups</a> page appear in display mode so each table shows who should be there. Nothing on this site is stored anywhere except in this browser.</p>
+<p class="foot">Draft prompts: check wording and page numbers against the class edition. Groups saved on the <a href="groups.html">Groups</a> page appear in display mode. Nothing is stored anywhere except in this browser.</p>
 </div>
 
 <!-- ---------- display mode ---------- -->
@@ -133,8 +134,6 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 let cur = 0;
 
-document.getElementById("steps").innerHTML = FOLIO.howItWorks.map(s=>`<div>${esc(s)}</div>`).join("");
-
 /* sentence starters */
 document.getElementById("starters").innerHTML = FOLIO.starters.map(g=>`
   <div class="card st-${g.key}"><h3>${esc(g.name)}</h3><ul>${g.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("");
@@ -159,13 +158,8 @@ function renderSession(){
     <div class="sess-head">
       <div class="card">
         <h3>Session ${s.n} · ${esc(s.title)}</h3>
-        <p class="small muted">${esc(s.focus)}</p>
-        <ol>${s.how.map(h=>`<li>${esc(h)}</li>`).join("")}</ol>
-        ${s.panelQuestions?`<p class="small" style="margin-top:8px"><b>The three panel questions</b></p><ol>${s.panelQuestions.map(q=>`<li>${esc(q)}</li>`).join("")}</ol>`:""}
-      </div>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <div class="card write"><h3>Write for two minutes</h3><p class="small" style="margin:0">${esc(s.write)}</p></div>
-        <div class="card pre"><h3>Pre-teach</h3><p style="margin:0">${esc(s.preTeach)}</p></div>
+        <p class="small muted" style="margin:0">${esc(s.skill)}</p>
+        ${s.panelQuestions?`<ol style="margin-top:8px">${s.panelQuestions.map(q=>`<li>${esc(q)}</li>`).join("")}</ol>`:""}
       </div>
     </div>
     <div class="stations">${s.stations.map(stationCard).join("")}</div>
@@ -195,7 +189,7 @@ function renderDisplay(){
   $("#dPhase").textContent = `Rotation ${D.rot} of ${FOLIO.tables} · ${D.phase==="talk"?"Talk":"Write"}`;
   $("#dPhase").classList.toggle("write", D.phase==="write");
   disp.classList.toggle("phase-write", D.phase==="write");
-  $("#dWriteQ").textContent = "Write: " + s.write;
+  $("#dWriteQ").textContent = "Write";
   $("#dGrid").innerHTML = s.stations.map(st=>`<div class="dst${st.teacher?" teacher":""}">
       <div class="num">Table ${st.n} ${st.teacher?'<span class="tag tag-teacher">Teacher table</span>':""}</div>
       ${whoAt(st.n)}
@@ -243,6 +237,7 @@ $("#dSkip").onclick = ()=>{ nextPhase(); };
 $("#dNext").onclick = ()=>{ pause(); if(D.rot<FOLIO.tables) D.rot++; D.phase="talk"; resetPhase(); renderDisplay(); };
 $("#dPrev").onclick = ()=>{ pause(); if(D.rot>1) D.rot--; D.phase="talk"; resetPhase(); renderDisplay(); };
 $("#dTalk").onchange = $("#dWrite").onchange = ()=>{ if(!D.running) resetPhase(); };
+$("#printCards").onclick = ()=>window.print();
 $("#dSound").onclick = e=>{ D.sound=!D.sound; e.currentTarget.setAttribute("aria-pressed",String(D.sound)); };
 document.addEventListener("keydown", e=>{ if(!disp.classList.contains("on")) return; if(e.key==="Escape") $("#dClose").click(); if(e.key===" "){ e.preventDefault(); D.running?pause():start(); } });
 </script>

@@ -17,6 +17,7 @@ table.cont{border-collapse:collapse;width:100%;min-width:900px;table-layout:fixe
 .cont th.rowlab{font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--deep);background:var(--band);vertical-align:middle}
 .cont td.expected-col{box-shadow:inset 3px 0 0 var(--gold),inset -3px 0 0 var(--gold)}
 .cont td.blank{background:var(--band);opacity:.4}
+.cont td.ext{font-style:italic;border-style:dashed}
 .ev{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 @media (max-width:800px){.ev{grid-template-columns:1fr}}
 .look{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -38,14 +39,13 @@ table.cont{border-collapse:collapse;width:100%;min-width:900px;table-layout:fixe
   <div>
     <div class="kicker">Year 9 English · Curious Incident · Speaking folio</div>
     <h1>Rubric</h1>
-    <p class="read">Straight from the school's Speaking and Listening continuum. <b>Level 9 is the Year 9 expected level.</b> The three sessions give evidence for Listening and Interacting at every table, and for Presenting when you read to the table or share back.</p>
+    <p class="read">The school's Speaking and Listening continuum, with Listening 10 to 12 added as a draft extension above it. <b>Level 9 is the Year 9 expected level.</b></p>
   </div>
   <nav class="site" aria-label="Folio pages">
     <a href="index.html">Prompts</a>
-    <a href="wagoll.html">WAGOLL wall</a>
+    <a href="wagoll.html">Table talk</a>
     <a href="rubric.html" aria-current="page">Rubric</a>
     <a href="groups.html">Groups</a>
-    <a href="booklet.html">Print booklet</a>
   </nav>
 </header>
 
@@ -57,25 +57,28 @@ table.cont{border-collapse:collapse;width:100%;min-width:900px;table-layout:fixe
 <div class="ev" id="ev"></div>
 
 <h2>What the teacher listens for at Table 1</h2>
-<p class="small muted">One session, one group at a time. The moves are the four colours on the <a href="wagoll.html">WAGOLL wall</a>.</p>
+<p class="small muted">One session, one group at a time. The moves are the ones on the <a href="wagoll.html">Table talk</a> page.</p>
 <div class="look">
   <div class="card"><h3>Session 1 · Personal response</h3><ul>
-    <li><span class="m m-respond">Says how the quote hit them, with a because</span> · Interacting 5 to 7</li>
-    <li><span class="m m-listen">Asks what someone meant before answering</span> · Listening 5 to 7</li>
-    <li><span class="m m-text">Goes back to the words when they respond</span> · Listening 8</li>
-    <li><span class="m m-invite">Notices who hasn't spoken</span> · Interacting 10</li>
+    <li>Feeling with a reason, from the words on the table · Interacting 5 and 7</li>
+    <li>Link to their own life that comes back to the text · Interacting 7</li>
+    <li>Link to a named person's idea · Listening 7, Interacting 7</li>
+    <li>A question that gets a reason out of someone, or infers what they imply · Listening 5 and 8</li>
+    <li>Notices who hasn't spoken · Interacting 10</li>
   </ul></div>
   <div class="card"><h3>Session 2 · I couldn't disagree more</h3><ul>
-    <li><span class="m m-voice">Reader: reads clearly, then runs the talk without taking over</span> · Presenting 6 to 8, Interacting 8</li>
-    <li><span class="m m-respond">Takes a side and gives a reason from the book</span> · Interacting 5</li>
-    <li><span class="m m-listen">Answers the other person's actual reason</span> · Listening 8 to 9</li>
-    <li><span class="m m-voice">Changes tone between persuading and conceding</span> · Interacting 9</li>
+    <li>A side with a reason from the book · Interacting 5</li>
+    <li>Quotes the opponent's exact words before answering · Listening 8 and 9</li>
+    <li>Reframes the statement into the real question · Listening 10</li>
+    <li>Concedes and keeps the rest of the argument · Interacting 9</li>
+    <li>Reader: reads, runs it, takes no side · Presenting 6, Interacting 8</li>
   </ul></div>
   <div class="card"><h3>Session 3 · Passage panel</h3><ul>
-    <li><span class="m m-text">Names a writing feature and the words it lives in</span> · Interacting 7</li>
-    <li><span class="m m-listen">Refuses a vague word and asks for the evidence</span> · Listening 9</li>
-    <li><span class="m m-respond">Turns an observation into a claim about effect</span> · Interacting 7</li>
-    <li><span class="m m-voice">Share-back: one clear sentence to the class</span> · Presenting 8 to 11</li>
+    <li>Feature located in words on the page · Interacting 7</li>
+    <li>'Yes, and' that adds · Listening 11</li>
+    <li>Takes someone else's point further · Listening 11 and 12</li>
+    <li>Turns given by name; first speaker returned to · Interacting 10</li>
+    <li>One clear sentence for the class · Presenting 8</li>
   </ul></div>
 </div>
 
@@ -85,7 +88,7 @@ table.cont{border-collapse:collapse;width:100%;min-width:900px;table-layout:fixe
 <table class="obs" id="obs"></table>
 </section>
 
-<p class="foot">Continuum levels 5 to 11 as published in the school's Speaking and Listening continuum. Listening runs to level 9 and Interacting to level 10 in the source document; the blank cells are blank there too.</p>
+<p class="foot">Levels 5 to 11 as published in the school's Speaking and Listening continuum; Listening runs to 9 and Interacting to 10 there, and the blank cells are blank there too. Listening 10 to 12 (dashed, italic) are the draft extension written against the VCE English study design.</p>
 </div>
 
 <script src="prompts.js"></script>
@@ -94,9 +97,9 @@ const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>
 const C = FOLIO.continuum, isExp = lv => lv===C.expected;
 document.getElementById("cont").innerHTML = `<colgroup><col class="lbl">${C.levels.map(()=>"<col>").join("")}</colgroup>
 <thead><tr><th class="rowlab">Substrand</th>${C.levels.map(lv=>`<th${isExp(lv)?' class="expected"':''}>${lv}${isExp(lv)?'<span class="sub">Year 9 expected</span>':''}</th>`).join("")}</tr></thead>
-<tbody>${C.strands.map(s=>`<tr><th class="rowlab" scope="row">${esc(s.name)}</th>${C.levels.map(lv=>s.levels[lv]?`<td${isExp(lv)?' class="expected-col"':''}>${esc(s.levels[lv])}</td>`:`<td class="blank${isExp(lv)?" expected-col":""}"></td>`).join("")}</tr>`).join("")}</tbody>`;
+<tbody>${C.strands.map(s=>`<tr><th class="rowlab" scope="row">${esc(s.name)}</th>${C.levels.map(lv=>s.levels[lv]?`<td class="${isExp(lv)?'expected-col':''}${s.extension&&s.extension.includes(lv)?' ext':''}">${esc(s.levels[lv])}</td>`:`<td class="blank${isExp(lv)?" expected-col":""}"></td>`).join("")}</tr>`).join("")}</tbody>`;
 document.getElementById("ev").innerHTML = C.strands.map(s=>`<div class="card"><h3>${esc(s.name)}</h3><p class="small" style="margin:0">${esc(FOLIO.evidence[s.key])}</p></div>`).join("");
-document.getElementById("obs").innerHTML = `<thead><tr><th style="width:150px">Student</th><th class="lv">Listening<br><span style="font-weight:400">5 · 6 · 7 · 8 · 9</span></th><th class="lv">Interacting<br><span style="font-weight:400">5 · 6 · 7 · 8 · 9 · 10</span></th><th class="lv">Presenting<br><span style="font-weight:400">5 · 6 · 7 · 8 · 9 · 10 · 11</span></th><th>What I heard (the words)</th></tr></thead>
+document.getElementById("obs").innerHTML = `<thead><tr><th style="width:150px">Student</th><th class="lv">Listening<br><span style="font-weight:400">5 · 6 · 7 · 8 · 9 · 10 · 11 · 12</span></th><th class="lv">Interacting<br><span style="font-weight:400">5 · 6 · 7 · 8 · 9 · 10</span></th><th class="lv">Presenting<br><span style="font-weight:400">5 · 6 · 7 · 8 · 9 · 10 · 11</span></th><th>What I heard (the words)</th></tr></thead>
 <tbody>${Array.from({length:6},()=>`<tr><td class="tall"></td><td></td><td></td><td></td><td></td></tr>`).join("")}</tbody>`;
 document.getElementById("print").onclick = ()=>window.print();
 </script>
