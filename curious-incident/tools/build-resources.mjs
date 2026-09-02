@@ -21,6 +21,7 @@ const SITE_FILES = ["Curious Incident Speaking Folio.docx", "Curious Incident - 
   "Curious Incident Speaking Folio - Lesson 2 - I Couldn't Disagree More.docx",
   "Curious Incident Speaking Folio - Lesson 3a - Passage Analysis Practice.docx",
   "Curious Incident - Passage Analysis Practice - Worksheet.docx",
+  "Curious Incident Speaking Folio - Lesson 3b - Passage Panel Talk.docx",
   "Curious Incident Speaking Folio - Lesson 3 - Passage Analysis Panel.docx"];
 mkdirSync(path.join(here, "..", "files"), { recursive: true });
 SITE_FILES.forEach(n => copyFileSync(path.join(repo, "English LA - Year 9 English", n), path.join(here, "..", "files", n)));
@@ -86,6 +87,7 @@ section.g li{margin:2px 0}
   <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 1 - Personal Response.docx")}"><b>Lesson 1 · Personal response</b><span>Word</span></a>
   <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 2 - I Couldn't Disagree More.docx")}"><b>Lesson 2 · I couldn't disagree more</b><span>Word</span></a>
   <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 3a - Passage Analysis Practice.docx")}"><b>Lesson 3a · Passage analysis practice</b><span>Word · the lesson before Session 3, with its worksheet</span></a>
+  <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 3b - Passage Panel Talk.docx")}"><b>Lesson 3b · Passage panel talk</b><span>Word · the talk on the same passage</span></a>
   <a class="card" href="${url(Y9 + "Curious Incident Speaking Folio - Lesson 3 - Passage Analysis Panel.docx")}"><b>Lesson 3 · Passage analysis panel</b><span>Word</span></a>
 </div>
 <div class="cols">${sections}</div>

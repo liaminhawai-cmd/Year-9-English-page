@@ -17,6 +17,7 @@ const outDir = process.argv[2] || here; mkdirSync(outDir, { recursive: true });
 const SITE = "https://liaminhawai-cmd.github.io/Year-9-English-page/curious-incident/";
 const WS_NAME = "Curious Incident - Passage Analysis Practice - Worksheet.docx";
 const LP_NAME = "Curious Incident Speaking Folio - Lesson 3a - Passage Analysis Practice.docx";
+const LP2_NAME = "Curious Incident Speaking Folio - Lesson 3b - Passage Panel Talk.docx";
 
 const DEEP = "22304A", BAND = "F4EFE4", LINE = "C9BFAE", MUTED = "645D52", font = "Calibri";
 const CONTENT = 9638;
@@ -110,6 +111,8 @@ const lp = (t, o = {}) => P(t, { size: 11, after: 40, ...o });
 const L = {
   ws: [ "Passage analysis practice worksheet", `${SITE}files/${encodeURIComponent(WS_NAME)}` ],
   vocab: [ "My glossary", `${SITE}glossary.html` ],
+  talk: [ "Table talk · Session 3", `${SITE}wagoll.html#session-3` ],
+  l3a: [ "Lesson 3a worksheet", `${SITE}files/${encodeURIComponent(WS_NAME)}` ],
 };
 const LP = [];
 LP.push(new Paragraph({ spacing: { after: 40 }, children: [new TextRun({ text: "Speaking Folio 3a - Passage analysis practice", size: 34, font, color: "1F1F1F" })] }));
@@ -137,5 +140,33 @@ LP.push(table([
   lrow("You will need", [B([{ link: L.ws }, { text: ", one per student." }]), B("Screen: the passage."), B([{ text: "Words: " }, { link: L.vocab }, { text: "." }]), B("Novel, Chapter 2.")]),
 ], [LABEL, CONTENT - LABEL]));
 
+/* ---------- LESSON 3b: the talk, on the same passage ---------- */
+const LP2 = [];
+LP2.push(new Paragraph({ spacing: { after: 40 }, children: [new TextRun({ text: "Speaking Folio 3b - Passage panel talk", size: 34, font, color: "1F1F1F" })] }));
+LP2.push(new Paragraph({ spacing: { after: 160 }, children: [new TextRun({ text: "Year 9 English · Speaking and Listening Folio", size: 18, font, color: "666666" })] }));
+LP2.push(table([
+  new TableRow({ tableHeader: true, children: [
+    cell(P([{ text: "Reading The Curious Incident of the Dog in the Night-Time", bold: true, color: GOLD }], { size: 11, align: AlignmentType.CENTER, after: 0 }), LABEL, { fill: PURPLE, valign: VerticalAlign.CENTER }),
+    cell(P([{ text: "Speaking Folio 3b - Passage panel talk", bold: true, color: GOLD }], { size: 11, align: AlignmentType.CENTER, after: 0 }), CONTENT - LABEL, { fill: PURPLE, valign: VerticalAlign.CENTER }),
+  ] }),
+  lrow("Learning intention", [B("To use active listening skills"), B("To share my interpretations, ideas and opinions in a group discussion")]),
+  lrow("I will be successful when:", [lp("I can say what happens, how it is written and what it shows"), lp("I can build on what the last speaker said with “Yes, and …”"), lp("I can say our one thing to the class in one sentence", { after: 0 })]),
+  lrow("Engage", [P([{ text: "Silent starter:", bold: true, color: ROW.engage.ink }, { text: " Lesson 3a sheet out. Reread the line you would point to first." }], { size: 11, after: 40 }), B("Three students read theirs out.")], ROW.engage),
+  lrow("Develop and Discover", [
+    lp("Task 1 · Table talk", { bold: true }),
+    B([{ text: "Open " }, { link: L.talk }, { text: ", level 7, then level 9. Click through, mark each line." }]),
+    B("Discuss the difference between the level conversations."),
+    lp("Task 2 · Yes, and", { bold: true, before: 60 }),
+    B("In pairs, on the passage: every turn starts with “Yes, and …” or a question to the last speaker."),
+  ], ROW.develop),
+  lrow("Apply", [
+    B("Groups of four. Someone reads. What happens, how is it written, what does it show, in order."),
+    B("Everyone points at a word. One thing agreed in the last minute."),
+    B("Teacher circulates: listen for the “yes, and” and the turn handed by name."),
+  ], ROW.apply),
+  lrow("Review and reflect:", [B("Each table says its one thing to the class in one sentence.")], ROW.review),
+  lrow("You will need", [B([{ text: "Lesson 3a sheets, with page 2 done: " }, { link: L.l3a }]), B([{ text: "TV: " }, { link: L.talk }, { text: "." }]), B("Novel, Chapter 2.")]),
+], [LABEL, CONTENT - LABEL]));
+Packer.toBuffer(docOf("Passage panel talk lesson plan", LP2)).then(b => { writeFileSync(path.join(outDir, LP2_NAME), b); console.log("lesson 3b", b.length); });
 Packer.toBuffer(docOf("Passage analysis practice worksheet", W, true)).then(b => { writeFileSync(path.join(outDir, WS_NAME), b); console.log("worksheet", b.length); });
 Packer.toBuffer(docOf("Passage analysis practice lesson plan", LP)).then(b => { writeFileSync(path.join(outDir, LP_NAME), b); console.log("lesson", b.length); });
