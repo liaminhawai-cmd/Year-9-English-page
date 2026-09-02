@@ -33,16 +33,24 @@ html{font-size:clamp(15px, .5vw + 9px, 24px)}
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 @media (min-width:1100px){.cards{grid-template-columns:repeat(6,1fr)}}
 @media (max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}}
-/* build: tap the parts in order */
-.bline{display:flex;gap:6px;flex-wrap:wrap;align-items:center;min-height:56px;padding:10px;border:2px dashed var(--line);border-radius:10px;background:var(--band);margin:6px 0 12px}
-.bline.right{border-style:solid;border-color:#2f6a3e;background:#eef5ee} .bline.wrong{border-style:solid;border-color:#a83232;background:#f7ecec}
-.bline .ph{font-size:.82rem;color:var(--muted);font-weight:700}
-.bank{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
-.tile{font-family:Georgia,serif;font-size:1.15rem;font-weight:700;padding:8px 13px;border:2px solid var(--line);border-radius:10px;background:var(--paper);cursor:pointer;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:1px}
-.tile small{font-family:'Segoe UI',Tahoma,sans-serif;font-size:.66rem;font-weight:600;color:var(--muted)}
-.tile.p{color:var(--m-pre)} .tile.r{color:var(--m-root)} .tile.s{color:var(--m-suf)}
-.tile:hover:not(:disabled){border-color:var(--deep)} .tile:disabled{opacity:.35;cursor:default}
-.bline .tile{cursor:pointer}
+/* build: the board */
+.bankbox{border:1px solid var(--line);border-radius:12px;background:var(--band);padding:8px 12px 10px;display:flex;flex-direction:column;gap:6px}
+.bkh{font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px} .bkh.p{color:var(--m-pre)} .bkh.r{color:var(--m-root)} .bkh.s{color:var(--m-suf)}
+.bank{display:flex;gap:6px;flex-wrap:wrap}
+.tile{font-family:Georgia,serif;font-size:.95rem;font-weight:700;padding:4px 10px;border:2px solid;border-radius:9px;background:var(--paper);cursor:grab;display:flex;flex-direction:column;align-items:center;gap:0;line-height:1.15}
+.tile small{font-family:'Segoe UI',Tahoma,sans-serif;font-size:.62rem;font-weight:600;color:var(--muted)}
+.tile.p{color:var(--m-pre);border-color:#9bbedb;background:#eef4fa} .tile.r{color:var(--m-root);border-color:#d9b48f;background:#faf1e6} .tile.s{color:var(--m-suf);border-color:#a6c9ad;background:#eef6ef}
+.tile.sel{outline:3px solid var(--deep);outline-offset:1px}
+.rows{display:flex;flex-direction:column;gap:6px;margin-top:10px;overflow:auto;padding-right:4px}
+.wrow{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);padding:7px 12px}
+.wrow.done{background:#eef5ee;border-color:#2f6a3e} .wrow.done .built{font-family:Georgia,serif;font-size:1.05rem;color:#2f6a3e}
+.wrow .wdef{flex:1;font-size:.88rem;line-height:1.35} .wrow .wdef i{color:var(--muted)}
+.slots{display:flex;align-items:center;gap:4px;flex:none}
+.slot{min-width:64px;height:40px;border:2px dashed var(--line);border-radius:9px;background:var(--band);font:inherit;font-size:.78rem;color:var(--muted);cursor:pointer;padding:0 8px}
+.slot.over{border-color:var(--deep)} .slot.filled{border-style:solid;font-family:Georgia,serif;font-size:.95rem;font-weight:700}
+.slot.filled.p{color:var(--m-pre);border-color:#9bbedb;background:#eef4fa} .slot.filled.r{color:var(--m-root);border-color:#d9b48f;background:#faf1e6} .slot.filled.s{color:var(--m-suf);border-color:#a6c9ad;background:#eef6ef}
+.plus{color:var(--muted);font-weight:700}
+.wrow.shake{animation:shake .4s} @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
 .vcard{border:1px solid var(--line);border-radius:10px;padding:6px 8px;background:var(--paper);display:flex;flex-direction:column;gap:2px}
 .vcard .w{font-family:Georgia,serif;font-size:1.05rem;font-weight:700}
 .vcard .w .mp{color:var(--m-pre)} .vcard .w .mr{color:var(--m-root)} .vcard .w .ms{color:var(--m-suf)}
@@ -54,6 +62,7 @@ html{font-size:clamp(15px, .5vw + 9px, 24px)}
 .vcard textarea{width:100%;font:inherit;font-size:.72rem;line-height:1.25;min-height:2em;padding:4px 6px;border:1px dashed var(--line);border-radius:6px;background:var(--band);color:var(--ink);resize:vertical;margin-top:auto}
 .vcard textarea::placeholder{color:var(--muted)}
 .task{max-width:820px;margin:0 auto}
+#task:has(.bankbox){max-width:none}
 .qlab{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .qtext{font-size:1.1rem;line-height:1.55;margin-bottom:14px}
 .qtext .gap{display:inline-block;min-width:120px;border-bottom:2px solid var(--ink);text-align:center;font-weight:800;color:var(--accent)}
@@ -170,40 +179,44 @@ function matchItems(){ return cur.words.map(v=>({ a:v.w, q:v.meaning, opts:[v.w,
 function gapItems(){ return cur.words.map(v=>{ const text=v.gap||v.q; const stem=v.w.replace(/[ey]$/,"").replace(/[-]/g,"\\-");
   const re=new RegExp("\\b"+stem+"[a-z]{0,3}\\b","i"); const m=text.match(re); const form=m?m[0]:v.w;
   return { a:v.w, before:text.slice(0, m?m.index:0), after:text.slice(m?m.index+form.length:0), ch:v.ch, src:v.src, opts:[v.w, ...others(v,3)], explain:`<b>${esc(v.w)}</b>: ${esc(v.meaning)}` }; }); }
-/* build: the parts of the word, shuffled, with one decoy part from another word */
+/* build: the Bone Sparrow board. One shared bank of the block's morphemes
+   (prefixes, roots, suffixes, with meanings), and a row per word with a
+   slot for each part. Tap a morpheme then a slot, or drag it. A full row
+   checks itself: right ticks off, wrong shakes and clears and the word
+   stays on the board. The first attempt at each word is what is recorded. */
 function startBuild(){
-  let queue = shuffle(cur.words.map((v,i)=>({v,i})));
-  const next = ()=>{
-    if(!queue.length){ S.done[cur.id+"b"]=true; save(); summary("b","Build","Word challenge →",()=>{ step="match"; openBlock(); }); return; }
-    const {v,i} = queue.shift(); const left = new Set([i, ...queue.map(q=>q.i)]).size;
-    const own = v.parts.map((p,k)=>({ id:"p"+k, t:p[0], k:p[1], g:p[2] }));
-    const pool = cur.words.filter(w=>w!==v).flatMap(w=>w.parts).filter(p=>!v.parts.some(q=>q[0]===p[0]));
-    const d = pool.length ? shuffle(pool)[0] : null;
-    const bank = shuffle(own.concat(d ? [{ id:"d", t:d[0], k:d[1], g:d[2] }] : []));
-    let line = [];
-    const draw = ()=>{
-      $("#task").innerHTML = `<div class="qlab">Build the word · ${cur.words.length - left + 1} of ${cur.words.length}</div>
-        <div class="qtext">${esc(v.meaning)} <small>${esc(v.pos)}</small></div>
-        <div class="bline" id="bline">${line.length? line.map(id=>{ const b=bank.find(x=>x.id===id); return `<button class="tile ${b.k}" data-un="${id}">${esc(b.t)}</button>`; }).join("") : '<span class="ph">tap the parts in order</span>'}</div>
-        <div class="bank">${bank.map(b=>`<button class="tile ${b.k}" data-pl="${b.id}" ${line.includes(b.id)?"disabled":""}>${esc(b.t)}<small>${esc(b.g)}</small></button>`).join("")}</div>
-        <div class="fb" id="fb"></div><div class="nextrow"><button id="clr">Clear</button><button class="primary" id="chk" ${line.length?"":"disabled"}>Check</button><button class="primary" id="nxt" hidden>Next →</button></div>`;
-      $("#task").querySelectorAll("[data-pl]").forEach(b=>b.onclick=()=>{ line.push(b.dataset.pl); draw(); });
-      $("#task").querySelectorAll("[data-un]").forEach(b=>b.onclick=()=>{ line=line.filter(x=>x!==b.dataset.un); draw(); });
-      $("#clr").onclick=()=>{ line=[]; draw(); };
-      $("#chk").onclick=()=>{
-        const got=line.map(id=>bank.find(x=>x.id===id).t).join(""); const ok = got===v.w.replace(/[- ]/g,"");
-        if(!(cur.id+"b"+i in S.first)) { S.first[cur.id+"b"+i]=ok; save(); }
-        $("#bline").classList.add(ok?"right":"wrong");
-        $("#task").querySelectorAll(".tile").forEach(t=>t.disabled=true); $("#chk").hidden=true; $("#clr").hidden=true;
-        const fb=$("#fb"); fb.className="fb show "+(ok?"good":"bad");
-        fb.innerHTML=(ok?"✓ ":"✗ ")+`<b>${esc(v.w)}</b>: `+v.parts.map(p=>`<span class="${p[1]==="p"?"mp":p[1]==="s"?"ms":"mr"}"><b>${esc(p[0])}</b></span> (${esc(p[2])})`).join(" + ")+(ok?"":". It will come back.");
-        if(!ok) queue.push({v,i});
-        $("#nxt").hidden=false; $("#nxt").onclick=next; $("#nxt").focus();
-      };
-    };
-    draw();
+  const KIND = { p:"Prefixes", r:"Roots and base words", s:"Suffixes" };
+  const bank = []; cur.words.forEach(v=>v.parts.forEach(p=>{ if(!bank.some(b=>b.t===p[0]&&b.k===p[1])) bank.push({ t:p[0], k:p[1], g:p[2] }); }));
+  const rows = shuffle(cur.words.map((v,i)=>({ v, i, slots:v.parts.map(()=>null), done:false })));
+  let sel = null;
+  const draw = ()=>{
+    const left = rows.filter(r=>!r.done).length;
+    $("#task").innerHTML = `<div class="qlab">Build the words · ${cur.words.length - left} of ${cur.words.length} built</div>
+      <div class="bankbox">${["p","r","s"].map(k=>{ const bs=bank.filter(b=>b.k===k); return bs.length? `<div class="bk"><div class="bkh ${k}">${KIND[k]}</div><div class="bank">${bs.map(b=>`<button class="tile ${k}${sel&&sel.t===b.t&&sel.k===b.k?" sel":""}" draggable="true" data-t="${esc(b.t)}" data-k="${b.k}">${esc(b.t)}<small>${esc(b.g)}</small></button>`).join("")}</div></div>`:""; }).join("")}</div>
+      <div class="rows">${rows.map((r,ri)=>`<div class="wrow${r.done?" done":""}" data-r="${ri}">
+        <span class="wdef"><i>${esc(r.v.pos)}</i> — ${esc(r.v.meaning)}</span>
+        <span class="slots">${r.done? `<b class="built">${esc(r.v.w)}</b>` : r.slots.map((s,si)=>`<button class="slot${s?" filled "+s.k:""}" data-r="${ri}" data-s="${si}">${s?esc(s.t):"drop"}</button>`).join('<span class="plus">+</span>')}</span></div>`).join("")}</div>`;
+    const rowsEl=$("#task").querySelector(".rows"); if(rowsEl) rowsEl.style.maxHeight = Math.max(160, window.innerHeight - rowsEl.getBoundingClientRect().top - 44) + "px";
+    const tiles=$("#task").querySelectorAll(".bank .tile");
+    tiles.forEach(t=>{ t.onclick=()=>{ sel = sel&&sel.t===t.dataset.t&&sel.k===t.dataset.k ? null : { t:t.dataset.t, k:t.dataset.k }; draw(); };
+      t.ondragstart=e=>{ e.dataTransfer.setData("text/plain", t.dataset.k+"|"+t.dataset.t); }; });
+    $("#task").querySelectorAll(".slot").forEach(sl=>{
+      const ri=+sl.dataset.r, si=+sl.dataset.s;
+      const put=(k,t)=>{ rows[ri].slots[si]={ t, k }; sel=null; judge(ri); };
+      sl.onclick=()=>{ if(sel){ put(sel.k, sel.t); return; } if(rows[ri].slots[si]){ rows[ri].slots[si]=null; draw(); } };
+      sl.ondragover=e=>{ e.preventDefault(); sl.classList.add("over"); }; sl.ondragleave=()=>sl.classList.remove("over");
+      sl.ondrop=e=>{ e.preventDefault(); const [k,t]=e.dataTransfer.getData("text/plain").split("|"); put(k,t); };
+    });
   };
-  next();
+  const judge = ri=>{
+    const r=rows[ri];
+    if(r.slots.some(s=>!s)){ draw(); return; }
+    const ok = r.slots.every((s,k)=>s.t===r.v.parts[k][0] && s.k===r.v.parts[k][1]);
+    if(!(cur.id+"b"+r.i in S.first)) { S.first[cur.id+"b"+r.i]=ok; save(); }
+    if(ok){ r.done=true; draw(); if(rows.every(x=>x.done)){ S.done[cur.id+"b"]=true; save(); setTimeout(()=>summary("b","Build","Word challenge →",()=>{ step="match"; openBlock(); }), 500); } }
+    else { draw(); const el=$("#task").querySelector(`.wrow[data-r="${ri}"]`); el.classList.add("shake"); setTimeout(()=>{ r.slots=r.slots.map(()=>null); draw(); }, 450); }
+  };
+  draw();
 }
 function summary(kind, label, nextLabel, nextFn){
   const s=score(cur,kind);
