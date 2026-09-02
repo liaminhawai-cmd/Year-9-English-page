@@ -3,72 +3,64 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Table talk for the Curious Incident speaking folio: click through five minutes at a table one line at a time, move the level up or down, and see which discussion move each line makes.">
+<meta name="description" content="Table talk for the Curious Incident speaking folio: two people at a table, one line at a time, with the Listening, Interacting and Presenting rubric alongside.">
 <title>Curious Incident · Table Talk</title>
 <link rel="stylesheet" href="folio.css">
 <style>
+:root{--L:var(--listen);--L-soft:var(--listen-soft);--I:var(--respond);--I-soft:var(--respond-soft);--P:var(--text);--P-soft:var(--text-soft)}
 .ctl{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:8px 0 12px}
 @media (max-width:760px){.ctl{grid-template-columns:1fr}}
 .tabs{display:flex;flex-wrap:wrap;gap:6px}
 .lvl{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 4px;background:var(--band)}
 .lvl button{min-height:32px;width:36px;padding:0;justify-content:center;font-size:1.1rem;border-radius:50%}
-.lvl .lab{min-width:190px;text-align:center;font-weight:800;font-size:.86rem;color:var(--deep)}
+.lvl .lab{min-width:180px;text-align:center;font-weight:800;font-size:.86rem;color:var(--deep)}
 .lvl .lab small{display:block;font-weight:600;font-size:.68rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
 .lvl.exp .lab{color:var(--gold)}
 
-.stage{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr);gap:14px}
-@media (max-width:860px){.stage{grid-template-columns:1fr}}
-.prompt blockquote{margin:0 0 10px;font-size:1rem}
-.prompt .task{font-size:.82rem;color:var(--muted);margin:0 0 10px}
+.stage{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.stage{grid-template-columns:1fr} .chat{min-height:0} .rub{position:static}}
+.prompt blockquote{margin:0 0 6px;font-size:1rem}
+.prompt .task{font-size:.82rem;color:var(--muted);margin:0 0 12px}
 
-/* the table and the four seats */
-.table{position:relative;height:150px;margin:6px auto 10px;max-width:520px}
-.table .top{position:absolute;left:50%;top:50%;width:64%;height:56px;transform:translate(-50%,-50%);border-radius:40px;background:var(--band);border:2px solid var(--line)}
-.seat{position:absolute;width:44px;text-align:center;transition:transform .15s,opacity .15s}
-.seat svg{width:44px;height:50px;display:block;margin:0 auto;opacity:.45}
-.seat.on svg{opacity:1}
-.seat.on{transform:scale(1.18)}
-.seat.spoke svg{opacity:.75}
-.seat.a{left:8%;top:50%;transform:translateY(-50%)} .seat.a.on{transform:translateY(-50%) scale(1.18)}
-.seat.b{left:50%;top:0;transform:translateX(-50%)} .seat.b.on{transform:translateX(-50%) scale(1.18)}
-.seat.c{right:8%;top:50%;transform:translateY(-50%)} .seat.c.on{transform:translateY(-50%) scale(1.18)}
-.seat.d{left:50%;bottom:0;transform:translateX(-50%)} .seat.d.on{transform:translateX(-50%) scale(1.18)}
-@media (prefers-reduced-motion:reduce){.seat{transition:none}}
-
-.bubble{position:relative;background:var(--paper);border:2px solid var(--deep);border-radius:14px;padding:12px 14px;font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;line-height:1.55;min-height:78px}
-.bubble .spk{font-family:system-ui,sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:3px}
-.bubble.silent{border-style:dashed;color:var(--muted)}
-.nav{display:flex;gap:6px;align-items:center;margin-top:10px;flex-wrap:wrap}
+/* the conversation: bubbles stack, the last three stay */
+.chat{display:flex;flex-direction:column;gap:10px;min-height:300px}
+.line{display:grid;grid-template-columns:40px 1fr;gap:8px;align-items:end;max-width:88%;opacity:1;transition:opacity .35s,transform .35s}
+.line.b{grid-template-columns:1fr 40px;margin-left:auto}
+.line.in{animation:fadein .35s ease-out}
+.line.out{opacity:0;transform:translateY(-6px)}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.line,.line.in{animation:none;transition:none}}
+.line svg{width:40px;height:46px;display:block}
+.bub{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;border-bottom-left-radius:3px;padding:9px 12px;font-family:Georgia,"Times New Roman",serif;font-size:1.02rem;line-height:1.55}
+.line.b .bub{border-bottom-left-radius:14px;border-bottom-right-radius:3px}
+.line.cur .bub{border-color:var(--deep);border-width:2px}
+.line.past{opacity:.62}
+.bub .spk{font-family:system-ui,sans-serif;font-size:.64rem;font-weight:800;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:2px}
+.bub.silent{border-style:dashed;color:var(--muted)}
+/* marks are invisible until the line is annotated */
+.m{text-decoration:none;font-weight:inherit;color:inherit}
+.line.ann .m{font-weight:600;text-decoration-line:underline;text-underline-offset:3px;text-decoration-thickness:2px}
+.line.ann .m-L{color:var(--L);text-decoration-color:var(--L)}
+.line.ann .m-I{color:var(--I);text-decoration-color:var(--I);text-decoration-style:dashed}
+.line.ann .m-P{color:var(--P);text-decoration-color:var(--P);text-decoration-style:dotted;font-style:italic}
+.nav{display:flex;gap:6px;align-items:center;margin-top:12px;flex-wrap:wrap}
 .nav .count{font-size:.8rem;color:var(--muted);margin-left:auto}
-.sofar{margin-top:12px;border-top:1px solid var(--line);padding-top:8px;font-size:.8rem;color:var(--muted);line-height:1.45}
-.sofar div{display:grid;grid-template-columns:22px 1fr;gap:6px;padding:2px 0}
-.sofar b{color:var(--deep)}
-.sofar .cur{color:var(--ink)}
-.sofar .m{font-weight:600}
-.sofar[hidden]{display:none}
 
-/* side panel */
-.side .card{margin-bottom:10px}
-.legend{display:flex;flex-direction:column;gap:5px}
-.legend div{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:baseline;font-size:.78rem;line-height:1.35}
-.legend .chip{white-space:nowrap}
-.legend .what{color:var(--muted)}
-.chip{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1.5px solid;background:var(--paper)}
-.this h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.this .mv{display:flex;flex-direction:column;gap:4px;margin:6px 0}
-.this .note{font-size:.88rem;line-height:1.5;margin:0}
-.this .none{font-size:.85rem;color:var(--muted)}
-.proves{display:none}
-.proves.show{display:block}
-.proves div{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:baseline;font-size:.8rem;line-height:1.4;margin-bottom:5px}
-
-/* colour slots */
-.s-blue{color:var(--listen);border-color:var(--listen)} .s-green{color:var(--respond);border-color:var(--respond)}
-.s-orange{color:var(--text);border-color:var(--text)} .s-purple{color:var(--invite);border-color:var(--invite)}
-.s-grey{color:var(--voice);border-color:var(--voice)}
-.m.s-blue{text-decoration-color:var(--listen)} .m.s-green{text-decoration-color:var(--respond);text-decoration-style:dashed}
-.m.s-orange{text-decoration-color:var(--text);text-decoration-style:dotted} .m.s-purple{text-decoration-color:var(--invite);text-decoration-style:double}
-.m.s-grey{font-style:italic;font-weight:500;text-decoration:none}
+/* rubric on the side: three rows */
+.rub{display:flex;flex-direction:column;gap:8px;position:sticky;top:10px}
+.row{border:1.5px solid var(--line);border-left-width:6px;border-radius:10px;padding:9px 11px;background:var(--band);transition:background .3s,border-color .3s}
+.row.L{border-left-color:var(--L)} .row.I{border-left-color:var(--I)} .row.P{border-left-color:var(--P)}
+.row h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;margin:0 0 3px;display:flex;justify-content:space-between;align-items:baseline}
+.row.L h3{color:var(--L)} .row.I h3{color:var(--I)} .row.P h3{color:var(--P)}
+.row h3 small{font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:none}
+.row .desc{font-size:.8rem;color:var(--muted);line-height:1.4;margin:0}
+.row .why{display:none;margin:7px 0 0;padding-top:7px;border-top:1px dashed var(--line);font-size:.9rem;line-height:1.5}
+.row .why b{display:inline-block;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+.row.on{background:var(--paper)}
+.row.on.L{border-color:var(--L)} .row.on.I{border-color:var(--I)} .row.on.P{border-color:var(--P)}
+.row.on .why{display:block}
+.row.L .why b{color:var(--L)} .row.I .why b{color:var(--I)} .row.P .why b{color:var(--P)}
+.hint{font-size:.78rem;color:var(--muted);margin:6px 0 0}
 </style>
 </head>
 <body>
@@ -99,26 +91,18 @@
 <div class="stage">
   <div>
     <div class="prompt"><blockquote id="prompt"></blockquote><p class="task" id="task"></p></div>
-    <div class="table" id="table"><div class="top"></div></div>
-    <div class="bubble" id="bubble"></div>
+    <div class="chat" id="chat"></div>
     <div class="nav">
       <button id="back">◀ Back</button>
       <button class="primary" id="next">Next ▶</button>
       <button id="restart">Restart</button>
-      <button id="all" aria-pressed="false">Show all lines</button>
       <span class="count" id="count"></span>
     </div>
-    <div class="sofar" id="sofar" hidden></div>
   </div>
-  <div class="side">
-    <div class="card this" id="this"></div>
-    <div class="card"><h3 style="font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Moves in this session</h3><div class="legend" id="legend"></div></div>
-    <div class="card proves" id="proves"></div>
-    <div class="card" id="cont" style="font-size:.78rem"></div>
-  </div>
+  <div class="rub" id="rub"></div>
 </div>
 
-<p class="foot">Seats are letters, not people. Chapter references are to the prime-numbered chapters. Use ← → on a keyboard.</p>
+<p class="foot">Two seats, A and B. Next shows a line; Next again marks it against the rubric. ← → on a keyboard, ↑ ↓ for the level.</p>
 </div>
 
 <script src="prompts.js"></script>
@@ -126,81 +110,91 @@
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-const SEATCOL = {A:"#176b87",B:"#744f91",C:"#a34d1d",D:"#357a46",T:"#8b681e"};
+const SEATCOL = { A: "#176b87", B: "#744f91" };
 const dude = l => `<svg viewBox="0 0 34 40" aria-hidden="true"><circle cx="17" cy="12" r="9" fill="${SEATCOL[l]}"/><path d="M3 40c0-9 6-14 14-14s14 5 14 14z" fill="${SEATCOL[l]}" opacity=".85"/><circle cx="13.5" cy="11" r="1.4" fill="#fff"/><circle cx="20.5" cy="11" r="1.4" fill="#fff"/><path d="M13 16q4 3 8 0" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/><text x="17" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#fff" font-family="system-ui,sans-serif">${l}</text></svg>`;
+const STRANDS = [["L", "listening"], ["I", "interacting"], ["P", "presenting"]];
+const strand = k => FOLIO.continuum.strands.find(s => s.key === STRANDS.find(x => x[0] === k)[1]);
+const KEEP = 3; // bubbles that stay on screen
 
-const S = { si: 0, li: 0, line: 0, all: false };
+/* state: session, level position, how many lines shown, whether the last shown line is annotated */
+const S = { si: 0, li: 2, shown: 1, ann: false };
 const params = new URLSearchParams(location.search);
 if (params.get("session")) S.si = Math.max(0, Math.min(2, +params.get("session") - 1));
-
 const sess = () => SESSIONS[S.si];
-/* level positions: 0 = not working, 1..n = the session's levels */
-const positions = () => [{ notWorking: true, band: "Not working", level: null, lines: NOT_WORKING.lines, proves: null }, ...sess().levels];
-const cur = () => positions()[S.li];
-const slotOf = key => (sess().moves.find(m => m.key === key) || { slot: "grey" }).slot;
-const nameOf = key => (sess().moves.find(m => m.key === key) || { name: "Voice and body" }).name;
-const mark = t => esc(t).replace(/\{(\w+)\|([^}]*)\}/g, (_, k, w) => `<span class="m s-${slotOf(k)}">${w}</span>`);
-const movesIn = t => [...t.matchAll(/\{(\w+)\|/g)].map(m => m[1]).filter((v, i, a) => a.indexOf(v) === i);
+const lvl = () => sess().levels[S.li];
+const lines = () => lvl().lines;
+const mark = t => esc(t).replace(/\{([LIP])\|([^}]*)\}/g, (_, k, w) => `<span class="m m-${k}">${w}</span>`);
 
 function renderStatic() {
   $("#tabs").innerHTML = SESSIONS.map((s, i) => `<button role="tab" data-i="${i}" aria-pressed="${i === S.si}">Session ${s.n} · ${esc(s.title)}</button>`).join("");
-  $("#tabs").querySelectorAll("button").forEach(b => b.onclick = () => { S.si = +b.dataset.i; S.li = Math.min(S.li, positions().length - 1); S.line = 0; renderStatic(); render(); });
-  $("#prompt").innerHTML = `${esc(sess().prompt)}<span class="src">${esc(sess().quoteLabel)}</span>`;
+  $("#tabs").querySelectorAll("button").forEach(b => b.onclick = () => { S.si = +b.dataset.i; S.shown = 1; S.ann = false; renderStatic(); render(); });
+  $("#prompt").innerHTML = `${esc(sess().prompt)}<span class="src">${esc(sess().label)}</span>`;
   $("#task").textContent = sess().task;
-  $("#legend").innerHTML = sess().moves.map(m => `<div><span class="chip s-${m.slot}">${esc(m.name)}</span><span class="what">${esc(m.what)}</span></div>`).join("");
-  $("#table").innerHTML = `<div class="top"></div>` + ["A", "B", "C", "D"].map(l => `<div class="seat ${l.toLowerCase()}" data-s="${l}">${dude(l)}</div>`).join("");
-}
-
-function contFor(level) {
-  if (level == null) return "";
-  return `<b style="display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--deep);margin-bottom:3px">Continuum at this level</b>` +
-    FOLIO.continuum.strands.filter(s => s.key !== "presenting").map(s => {
-      const keys = Object.keys(s.levels).map(Number); const lv = Math.min(level, Math.max(...keys));
-      return `<div><span style="color:var(--muted);font-weight:700">${esc(s.name)} ${lv}</span> · ${esc(s.levels[lv])}</div>`;
-    }).join("");
 }
 
 function render() {
-  const p = cur(), lines = p.lines, n = lines.length;
-  S.line = Math.max(0, Math.min(S.line, n - 1));
-  const [who, text, note] = lines[S.line];
-  const exp = p.level === FOLIO.continuum.expected;
+  const all = lines(), n = all.length;
+  S.shown = Math.max(1, Math.min(S.shown, n));
+  const cur = all[S.shown - 1];
+  const exp = lvl().level === FOLIO.continuum.expected;
   $("#lvl").classList.toggle("exp", exp);
-  $("#lvlLab").innerHTML = p.notWorking ? `Not working<small>no level</small>` : `Level ${p.level}<small>${esc(p.band)}${exp ? " · Year 9" : ""}</small>`;
-  $("#down").disabled = S.li === 0; $("#up").disabled = S.li === positions().length - 1;
-  document.querySelectorAll(".seat").forEach(el => {
-    el.classList.toggle("on", el.dataset.s === who);
-    el.classList.toggle("spoke", el.dataset.s !== who && lines.slice(0, S.line).some(l => l[0] === el.dataset.s));
-  });
-  const silent = text.trim() === "…";
-  $("#bubble").className = "bubble" + (silent ? " silent" : "");
-  $("#bubble").innerHTML = `<span class="spk">${who}</span>${silent ? "(says nothing)" : mark(text)}`;
-  $("#count").textContent = `Line ${S.line + 1} of ${n}`;
-  $("#back").disabled = S.line === 0; $("#next").disabled = S.line === n - 1;
-  const mv = movesIn(text);
-  $("#this").innerHTML = `<h3>This line</h3>` + (mv.length ? `<div class="mv">${mv.map(k => `<span class="chip s-${slotOf(k)}">${esc(nameOf(k))}</span>`).join("")}</div>` : `<p class="none">No move marked. Just talk.</p>`) + (note ? `<p class="note">${esc(note)}</p>` : "");
-  const pv = $("#proves");
-  if (p.proves && S.line === n - 1) { pv.className = "card proves show"; pv.innerHTML = `<h3 style="font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px">What this table proved</h3>` + sess().moves.map(m => `<div><span class="chip s-${m.slot}">${esc(m.name)}</span><span>${esc(p.proves[m.key] || "")}</span></div>`).join(""); }
-  else { pv.className = "card proves"; pv.innerHTML = ""; }
-  $("#cont").innerHTML = contFor(p.level); $("#cont").style.display = p.level == null ? "none" : "";
-  const sf = $("#sofar");
-  sf.hidden = !S.all;
-  if (S.all) sf.innerHTML = lines.map((l, i) => `<div class="${i === S.line ? "cur" : ""}"><b>${l[0]}</b><span>${l[1].trim() === "…" ? "(says nothing)" : mark(l[1])}</span></div>`).join("");
+  $("#lvlLab").innerHTML = lvl().level == null ? `Not working<small>no level</small>` : `Level ${lvl().level}<small>${esc(lvl().band)}${exp ? " · Year 9" : ""}</small>`;
+  $("#down").disabled = S.li === 0; $("#up").disabled = S.li === sess().levels.length - 1;
+
+  /* conversation: the last KEEP lines, current one framed, earlier ones dimmed */
+  const from = Math.max(0, S.shown - KEEP);
+  $("#chat").innerHTML = all.slice(from, S.shown).map((l, i) => {
+    const idx = from + i, isCur = idx === S.shown - 1, silent = l[1].trim() === "…";
+    const annotated = isCur ? S.ann : true;
+    return `<div class="line ${l[0].toLowerCase()} ${isCur ? "cur in" : "past"} ${annotated ? "ann" : ""}" data-i="${idx}">
+      ${l[0] === "A" ? dude("A") : ""}<div class="bub${silent ? " silent" : ""}"><span class="spk">${l[0]}</span>${silent ? "(says nothing)" : mark(l[1])}</div>${l[0] === "B" ? dude("B") : ""}</div>`;
+  }).join("");
+  $("#chat").querySelectorAll(".line.cur").forEach(el => el.onclick = () => { if (!S.ann) { S.ann = true; render(); } });
+
+  /* rubric rows: descriptor at this level, and the explanation when the current line is annotated */
+  $("#rub").innerHTML = STRANDS.map(([k]) => {
+    const s = strand(k), L = lvl().level;
+    let lv = null, desc = "";
+    if (L != null) { const keys = Object.keys(s.levels).map(Number); lv = Math.min(L, Math.max(...keys)); desc = s.levels[lv]; }
+    const note = S.ann && cur[2] && cur[2][k];
+    return `<div class="row ${k}${note ? " on" : ""}">
+      <h3><span>${esc(s.name)}</span>${lv != null ? `<small>level ${lv}</small>` : ""}</h3>
+      ${desc ? `<p class="desc">${esc(desc)}</p>` : `<p class="desc">Nothing here yet.</p>`}
+      ${note ? `<p class="why"><b>Level ${note[0]}</b>${esc(note[1])}</p>` : ""}
+    </div>`;
+  }).join("") + (S.ann && cur[2] && !Object.keys(cur[2]).length ? `<p class="hint">Nothing in this line is evidence for any row. It is just talk.</p>` : "");
+
+  $("#count").textContent = `Line ${S.shown} of ${n}${S.ann ? " · marked" : ""}`;
+  $("#back").disabled = S.shown === 1 && !S.ann;
+  $("#next").disabled = S.shown === n && S.ann;
+  $("#next").textContent = S.ann ? "Next ▶" : "Mark it ▶";
 }
 
-$("#next").onclick = () => { S.line++; render(); };
-$("#back").onclick = () => { S.line--; render(); };
-$("#restart").onclick = () => { S.line = 0; render(); };
-$("#up").onclick = () => { S.li = Math.min(positions().length - 1, S.li + 1); render(); };
-$("#down").onclick = () => { S.li = Math.max(0, S.li - 1); render(); };
-$("#all").onclick = e => { S.all = !S.all; e.currentTarget.setAttribute("aria-pressed", String(S.all)); render(); };
+function next() {
+  if (!S.ann) { S.ann = true; render(); return; }
+  if (S.shown < lines().length) {
+    const first = $("#chat .line");
+    const willDrop = S.shown >= KEEP;
+    S.shown++; S.ann = false;
+    if (willDrop && first && !matchMedia("(prefers-reduced-motion: reduce)").matches) { first.classList.add("out"); setTimeout(render, 220); }
+    else render();
+  }
+}
+function back() {
+  if (S.ann) { S.ann = false; render(); return; }
+  if (S.shown > 1) { S.shown--; S.ann = true; render(); }
+}
+$("#next").onclick = next;
+$("#back").onclick = back;
+$("#restart").onclick = () => { S.shown = 1; S.ann = false; render(); };
+$("#up").onclick = () => { S.li = Math.min(sess().levels.length - 1, S.li + 1); S.shown = Math.min(S.shown, lines().length); render(); };
+$("#down").onclick = () => { S.li = Math.max(0, S.li - 1); S.shown = Math.min(S.shown, lines().length); render(); };
 document.addEventListener("keydown", e => {
-  if (e.key === "ArrowRight") { if (S.line < cur().lines.length - 1) { S.line++; render(); } }
-  if (e.key === "ArrowLeft") { if (S.line > 0) { S.line--; render(); } }
-  if (e.key === "ArrowUp") { $("#up").click(); }
-  if (e.key === "ArrowDown") { $("#down").click(); }
+  if (e.key === "ArrowRight") next();
+  if (e.key === "ArrowLeft") back();
+  if (e.key === "ArrowUp") $("#up").click();
+  if (e.key === "ArrowDown") $("#down").click();
 });
-S.li = 2; /* open on the expected level */
 renderStatic(); render();
 </script>
 </body>

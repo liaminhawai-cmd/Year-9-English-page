@@ -11,7 +11,6 @@ import path from "node:path";
 
 const require = createRequire(import.meta.url);
 const FOLIO = require("../prompts.js");
-const { SESSIONS } = require("../wagoll-content.js");
 const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, PageBreak, LevelFormat, AlignmentType, HeightRule } = require("docx");
 
 const out = process.argv[2] || path.join(path.dirname(fileURLToPath(import.meta.url)), "Curious Incident Speaking Folio - Lesson Plans.docx");
@@ -69,7 +68,7 @@ body.push(...bullets([
   "Seat EAL students so the Reader role in Session 2 comes to them at a table they have heard once already.",
   "Allow a minute of first-language planning before the go-round at each table. The talk is in English.",
   "Let a student write the table's ideas as dot points rather than sentences. The evidence is that they heard, not that they wrote prose.",
-  "The interactive table talk at level 7 is the model for students who need to see the smallest version of the move first.",
+  "The Table talk page at level 7 is the model for students who need to see the smallest version of the move first: two speakers, one line at a time, the rubric row lighting up when the line is marked.",
 ]));
 body.push(brk());
 
@@ -79,8 +78,8 @@ const plans = [
     focus: [lv("listening", 5), lv("listening", 7), lv("interacting", 5), lv("interacting", 7), lv("interacting", 10)],
     preteach: [
       "Open Table talk on Session 1 at level 7. Click through the first four lines. Ask: what is missing? (Reasons. Links. Nobody asks D anything.)",
-      "Level up to 9. Click through. Stop on C's question and on D's 'I'd find that easier'. Name the four moves from the legend: feeling with a reason, link to your own life, link to what someone said, ask to understand.",
-      "Level up to 11 for two lines only: B's 'So you're saying…' Name it: inferring what the speaker implies, then checking. That is the move that gets a student above 9.",
+      "Level up to 9. Show a line, then press Mark it: the words light up and the rubric row on the side says which strand it is evidence for and at what level. Stop on B's 'So you're reading it as him rejecting her?' (Listening 8) and on A's 'I'd find that easier' (Interacting 7).",
+      "Level up to 11 for two lines only: B's 'So you're saying…' (Listening 8, inferring what the speaker implies and checking it) and the last line, where B changes their view out loud. That is what gets a student above 9.",
       "Throwaway practice, two minutes, in the groups they will sit in: the 'faces' passage where Siobhan draws expressions. Go round once with a feeling and a because. One person asks one question.",
     ],
     model: "Sit at Table 1 with one group for ninety seconds on the Table 1 quote. Play the level 7 student once: 'I think it's sad.' Ask the class what the next person should say. Then play it at 9.",
@@ -91,9 +90,9 @@ const plans = [
     focus: [lv("interacting", 5), lv("interacting", 8), lv("interacting", 9), lv("listening", 8), lv("listening", 9), lv("presenting", 6)],
     preteach: [
       "Throwaway statement on the board: 'Homework should be banned.' Thirty seconds each side, no book needed. Stop it.",
-      "Open Table talk on Session 2 at level 7. Click through. Ask what A did when D disagreed. (Repeated themselves, louder.)",
-      "Level 9. Stop on D's 'Do you mean good father overall, or good at the daily stuff?' Name it: reframe. Stop on A's 'You said one lie.' Name it: quote your opponent back. Stop on C's 'Fair. Good at the daily stuff': concede, and keep the rest.",
-      "Level 11, two lines: B's opening ('what would count as evidence?') and C's 'carer versus liar assumes he can only be one'. This is what above-standard sounds like: the argument is about the evidence, not the volume.",
+      "Open Table talk on Session 2 at level 7. Click through, marking each line. Ask what A did when B disagreed. (Repeated themselves, louder. Nothing lands in the Listening row.)",
+      "Level 9. Stop on A's 'Do you mean good father overall, or good at the daily stuff?' (Listening 8: reframe). Stop on A's 'You said one lie' (Listening 9: quote your opponent back). Stop on B's 'Fair. Good at the daily stuff' (Interacting 9: concede, and keep the rest).",
+      "Level 11, two lines: A's opening ('what would count as evidence?') and A's 'carer versus liar assumes he can only be one'. This is what above-standard sounds like: the argument is about the evidence, not the volume.",
       "Explain the Reader role once: reads, asks both sides, chooses who speaks, checks who moved, never argues. Rotates every table.",
       "Re-run the homework statement for one minute using the three moves. Listen for one quote-back.",
     ],
@@ -105,9 +104,9 @@ const plans = [
     focus: [lv("interacting", 7), lv("listening", 9), lv("listening", 10), lv("listening", 11), lv("presenting", 8)],
     preteach: [
       "Put the first page of the novel on the screen. Read it aloud. Ask the three panel questions in order: what happens, how is it written, what does it show. Take one answer each, no discussion yet.",
-      "Open Table talk on Session 3 at level 7. Click through. Ask where the good observation ('7 minutes after midnight') went. (Nowhere. Nobody took it further.)",
-      "Level 9. Stop on D's 'Calm how? Say what makes it calm.' Name it: elaborate on someone else. Stop on B's 'Yes, and there are no feeling words at all.' Name it: yes, and. Stop on C handing the turn back to A. Name it: turns are given.",
-      "Level 11, two lines: A's 'the counting continues' and B's link to the station. Name it: linking across the book. This is Listening 11, building on the ideas of others to develop your own.",
+      "Open Table talk on Session 3 at level 7. Click through, marking each line. Ask where the good observation ('7 minutes after midnight') went. (Nowhere. Nobody took it further.)",
+      "Level 9. Stop on B's 'Calm how? What makes it calm?' (Listening 7: make the other person say more). Stop on B's 'Yes, and there are no feeling words at all' (Interacting 7: yes, and). Stop on A's 'Do we pick one?' (Listening 8: summarise and hand the choice over).",
+      "Level 11, two lines: A's 'the counting continues' and A's link to the station. Linking across the book is Listening 11, building on the ideas of others to develop your own.",
       "One-minute drill in groups on the opening: each person must start with 'Yes, and' or a question to the previous speaker. Anyone who starts with 'but' starts again.",
     ],
     model: "Panel one passage with a volunteer group at Table 1: you read, you hand the first turn by name, you elaborate once on a student's point and say that you are doing it.",
@@ -117,7 +116,7 @@ const plans = [
 ];
 
 FOLIO.sessions.forEach((s, i) => {
-  const plan = plans[i], scene = SESSIONS[i];
+  const plan = plans[i];
   body.push(P(`Session ${s.n} of 3`, { size: 8, bold: true, color: MUTED, after: 30 }));
   body.push(H1(`${s.title}`));
   body.push(P(s.skill, { size: 11, color: MUTED, after: 120 }));
@@ -140,11 +139,6 @@ FOLIO.sessions.forEach((s, i) => {
   ]));
   body.push(H2("What to listen for at Table 1"));
   body.push(...bullets(plan.listen));
-  body.push(H2("The moves, as the students hear them"));
-  body.push(table([
-    new TableRow({ tableHeader: true, children: [cell(P("Move", { bold: true, size: 8, after: 0 }), 2400, { fill: BAND }), cell(P("What it is", { bold: true, size: 8, after: 0 }), CONTENT - 2400, { fill: BAND })] }),
-    ...scene.moves.map(m => new TableRow({ children: [cell(P(m.name, { bold: true, size: 9.5, after: 0 }), 2400), cell(P(m.what, { size: 9.5, after: 0 }), CONTENT - 2400)] })),
-  ], [2400, CONTENT - 2400]));
   body.push(H2("The prompts"));
   body.push(table([
     new TableRow({ tableHeader: true, children: [cell(P("Table", { bold: true, size: 8, after: 0 }), 900, { fill: BAND }), cell(P("Prompt", { bold: true, size: 8, after: 0 }), 5200, { fill: BAND }), cell(P("Talk questions", { bold: true, size: 8, after: 0 }), CONTENT - 6100, { fill: BAND })] }),
