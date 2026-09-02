@@ -90,6 +90,8 @@ html{font-size:clamp(15px, .5vw + 9px, 24px)}
     <a href="wagoll.html">Table talk</a>
     <a href="rubric.html">Rubric</a>
     <a href="groups.html">Groups</a>
+    <a href="teacher.html">Teacher</a>
+    <a href="resources.html">Files</a>
   </nav>
 </header>
 
@@ -134,7 +136,7 @@ html{font-size:clamp(15px, .5vw + 9px, 24px)}
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-let cur = 0;
+let cur = (()=>{ const m=(location.hash||"").match(/session-(\d)/); return m? Math.min(FOLIO.sessions.length,Math.max(1,+m[1]))-1 : 0; })();
 
 /* sentence starters */
 document.getElementById("starters").innerHTML = FOLIO.starters.map(g=>`
@@ -143,7 +145,9 @@ document.getElementById("starters").innerHTML = FOLIO.starters.map(g=>`
 /* session tabs */
 const tabs = document.getElementById("tabs");
 tabs.innerHTML = FOLIO.sessions.map((s,i)=>`<button role="tab" data-i="${i}" aria-pressed="${i===cur}">Session ${s.n} · ${esc(s.title)}</button>`).join("");
-tabs.querySelectorAll("button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i; renderSession();});
+tabs.querySelectorAll("button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i; history.replaceState(null,"","#session-"+(cur+1)); renderSession();});
+const fromHash=()=>{ const m=(location.hash||"").match(/session-(\d)/); if(m){ const i=Math.min(FOLIO.sessions.length,Math.max(1,+m[1]))-1; if(i!==cur){ cur=i; renderSession(); } } };
+window.addEventListener("hashchange",fromHash);
 
 function stationCard(st){
   return `<div class="station${st.teacher?" teacher":""}">

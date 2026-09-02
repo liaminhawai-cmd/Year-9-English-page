@@ -92,6 +92,8 @@ html{font-size:clamp(15px, .5vw + 9px, 24px)}
     <a href="wagoll.html" aria-current="page">Table talk</a>
     <a href="rubric.html">Rubric</a>
     <a href="groups.html">Groups</a>
+    <a href="teacher.html">Teacher</a>
+    <a href="resources.html">Files</a>
   </nav>
 </header>
 
@@ -136,6 +138,7 @@ const KEEP = 3;
 const S = { si: 0, li: 0, shown: 1, ann: false };
 const params = new URLSearchParams(location.search);
 if (params.get("session")) S.si = Math.max(0, Math.min(2, +params.get("session") - 1));
+const hm = (location.hash || "").match(/session-(\d)/); if (hm) S.si = Math.max(0, Math.min(2, +hm[1] - 1));
 const sess = () => SESSIONS[S.si];
 const lvl = () => sess().levels[S.li];
 const lines = () => lvl().lines;
