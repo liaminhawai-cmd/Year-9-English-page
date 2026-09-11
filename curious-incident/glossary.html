@@ -116,7 +116,7 @@ html{font-size:clamp(15px, .5vw + 9px, 24px)}
 </div>
 </div>
 
-<script src="glossary-data.js?v=3"></script>
+<script src="glossary-data.js?v=4"></script>
 <script>
 "use strict";
 const KEY = "ci_glossary";
@@ -141,7 +141,8 @@ function renderHome(){
       <span class="sc"><span class="${doneKey(b,"b")?"ok":""}">${doneKey(b,"b")?`build ${score(b,"b").r}/${score(b,"b").t}`:"build"}</span><span class="${doneKey(b,"m")?"ok":""}">${doneKey(b,"m")?`words ${m.r}/${m.t}`:"words"}</span><span class="${doneKey(b,"g")?"ok":""}">${doneKey(b,"g")?`gaps ${g.r}/${g.t}`:"gaps"}</span></span></button>`; }).join("");
   $("#blocks").querySelectorAll(".blk").forEach(b=>b.onclick=()=>{ cur=BLOCKS[+b.dataset.i]; step="study"; openBlock(); });
 }
-const colourWord = v => v.parts.map(([t,k])=>`<span class="m${k==="p"?"p":k==="s"?"s":"r"}">${esc(t)}</span>`).join("");
+/* colour each part in place and keep whatever sits between parts (a space, a hyphen) */
+const colourWord = v => { let out="", pos=0; for (const [t,k] of v.parts) { const at=v.w.indexOf(t,pos); if(at<0) return esc(v.w); out += esc(v.w.slice(pos,at)) + `<span class="m${k==="p"?"p":k==="s"?"s":"r"}">${esc(t)}</span>`; pos=at+t.length; } return out + esc(v.w.slice(pos)); };
 function openBlock(){
   go("block"); $("#bname").textContent = cur.name;
   $("#steps").innerHTML = [["study","1 · Study"],["build","2 · Build"],["match","3 · Word challenge"],["gap","4 · Gap fill"]].map(([k,l])=>`<button data-s="${k}" aria-pressed="${k===step}">${l}</button>`).join("");
